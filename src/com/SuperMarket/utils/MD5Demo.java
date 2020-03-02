@@ -1,4 +1,4 @@
-package utils;
+package com.SuperMarket.utils;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -27,8 +27,5 @@ public class MD5Demo {
 			md5code = "0" + md5code;
 		}
 		return md5code;
-	}
-	public static void main(String[] args) {
-		System.out.println(md5("123"));
 	}
 }
