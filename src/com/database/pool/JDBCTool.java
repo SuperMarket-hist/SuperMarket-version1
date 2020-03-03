@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.management.RuntimeErrorException;
 import javax.sql.DataSource;
 
 import com.alibaba.druid.pool.DruidDataSource;
@@ -40,7 +41,7 @@ public class JDBCTool {
 			throw new RuntimeException("创建lian连池失败，" + e.getMessage());
 		}
 	}
-	public static Connection getConn() {
+	public Connection getConn() {
 		//可以直接通过数据源获取可用的链接
 		try {
 			return dataSource.getConnection();
@@ -66,6 +67,7 @@ public class JDBCTool {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new RuntimeException("未能成功关闭" + e.getMessage());
 		}
 	}
 }
