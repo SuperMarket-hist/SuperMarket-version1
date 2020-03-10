@@ -7,9 +7,9 @@ import java.security.NoSuchAlgorithmException;
 import org.w3c.dom.ranges.RangeException;
 
 /**
-* MD5¼ÓÃÜËã·¨
+* MD5åŠ å¯†ç®—æ³•
 * @author JamsF
-* @version ´´½¨Ê±¼ä£º2020Äê3ÔÂ2ÈÕ ÏÂÎç1:06:04
+* @version åˆ›å»ºæ—¶é—´ï¼š2020å¹´3æœˆ2æ—¥ ä¸‹åˆ1:06:04
 */
 public class MD5Demo {
 	public static String md5(String pass) {
@@ -20,7 +20,7 @@ public class MD5Demo {
 			secretBytes = md.digest();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			throw new RangeException((short) 0, "Ã»ÓĞmd5Ëã·¨");
+			throw new RangeException((short) 0, "æ²¡æœ‰md5ç®—æ³•");
 		}
 		String md5code = new BigInteger(1,secretBytes).toString(16);
 		for(int i = 0;i < 32 - md5code.length();i++) {

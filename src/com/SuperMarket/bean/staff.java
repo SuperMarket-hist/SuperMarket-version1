@@ -3,18 +3,18 @@ package com.SuperMarket.bean;
 import java.sql.Date;
 
 /**
-* ±àĞ´Ô±¹¤Àà
+* ç¼–å†™å‘˜å·¥ç±»
 * @author JamsF
-* @version ´´½¨Ê±¼ä£º2020Äê3ÔÂ3ÈÕ ÏÂÎç4:23:56
+* @version åˆ›å»ºæ—¶é—´ï¼š2020å¹´3æœˆ3æ—¥ ä¸‹åˆ4:23:56
 */
 public class staff {
-	private String staffid;	//Ô±¹¤±àºÅ
-	private String staffname;	//Ô±¹¤ĞÕÃû
-	private String password;	//µÇÂ¼ÃÜÂë
-	private int type;	//Ô±¹¤ÀàĞÍ£º1£º¹ÜÀíÔ±	2:²Ö¿â¹ÜÀíÔ±	3£ºÊÛ»õÔ±	4£ºÊÕÒøÔ±
-	private int salary;	//Ô±¹¤Ğ½×Ê
-	private int dataflag;	//ÕÊºÅ×´Ì¬£º1£º¿ÉÓÃ	0£º½ûÓÃ
-	private Date createtime;	//ÈëÖ°Ê±¼ä
+	private String staffid;	//å‘˜å·¥ç¼–å·
+	private String staffname;	//å‘˜å·¥å§“å
+	private String password;	//ç™»å½•å¯†ç 
+	private int type;	//å‘˜å·¥ç±»å‹ï¼š1ï¼šè¶…çº§ç®¡ç†å‘˜	2:ä»“åº“ç®¡ç†å‘˜	3ï¼šå”®è´§å‘˜	4ï¼šæ”¶é“¶å‘˜
+	private int salary;	//å‘˜å·¥è–ªèµ„
+	private int dataflag;	//å¸å·çŠ¶æ€ï¼š1ï¼šå¯ç”¨	0ï¼šç¦ç”¨
+	private Date createtime;	//å…¥èŒæ—¶é—´
 	public String getStaffid() {
 		return staffid;
 	}

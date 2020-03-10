@@ -2,53 +2,60 @@ package com.database.pool;
 
 import java.sql.Statement;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import javax.management.RuntimeErrorException;
 import javax.sql.DataSource;
 
-import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 /**
 * 
 * @author JamsF
-* @version ´´½¨Ê±¼ä£º2020Äê3ÔÂ2ÈÕ ÏÂÎç9:45:54
+* @version åˆ›å»ºæ—¶é—´ï¼š2020å¹´3æœˆ2æ—¥ ä¸‹åˆ9:45:54
 */
 public class JDBCTool {
 	private static DataSource dataSource;
 	static {
 		try {
 			Properties p = new Properties();
-				p.load(JDBCTool.class.getClassLoader().getResourceAsStream("druid.properties"));
-			//´´½¨Êı¾İÔ´¶ÔÏó
-			dataSource = new DruidDataSource();
-			//ÉèÖÃÊôĞÔ
-			DruidDataSource ds = (DruidDataSource)dataSource;
-			ds.setUrl(p.getProperty("jdbcUrl"));
-			ds.setPassword(p.getProperty("password"));
-			ds.setUsername(p.getProperty("username"));
-			ds.setInitialSize(new Integer(p.getProperty("initialSize")));
-			ds.setMaxActive(new Integer(p.getProperty("maxActive")));
-			ds.setMinIdle(new Integer(p.getProperty("minIdle")));
-			ds.setMaxWait(new Long(p.getProperty("maxWait")));
-			dataSource = ds;
+			InputStream is = JDBCTool.class.getClassLoader().getResourceAsStream("druid.properties");
+			p.load(is);
+			//åˆ›å»ºæ•°æ®æºå¯¹è±¡
+			dataSource = DruidDataSourceFactory.createDataSource(p);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new RuntimeException("´´½¨lianÁ¬³ØÊ§°Ü£¬" + e.getMessage());
+			throw new RuntimeException("åˆ›å»ºè¿æ¥æ± å¤±è´¥ï¼Œ" + e.getMessage());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
-	public Connection getConn() {
-		//¿ÉÒÔÖ±½ÓÍ¨¹ıÊı¾İÔ´»ñÈ¡¿ÉÓÃµÄÁ´½Ó
+	public static DataSource getDataSource() {
 		try {
+			return dataSource;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static Connection getConn() {
+		//å¯ä»¥ç›´æ¥é€šè¿‡æ•°æ®æºè·å–å¯ç”¨çš„é“¾æ¥
+		try {
+			if(dataSource.getConnection() == null) {
+				System.out.println("JDBCToolæœªè·å–åˆ°é“¾æ¥");
+			}
 			return dataSource.getConnection();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new RuntimeException("»ñÈ¡Á´½ÓÊ§°Ü£¬" + e.getMessage());
+			throw new RuntimeException("è·å–é“¾æ¥å¤±è´¥ï¼Œ" + e.getMessage());
 		}
 	}
 	public static void closeAll(Statement st,ResultSet rs,Connection conn) {
@@ -60,14 +67,27 @@ public class JDBCTool {
 				rs.close();
 			}
 			if(conn != null) {
-				//½«Á¬½Ó»¹»Ø³ØÖĞ
-				//Ê¹ÓÃdruid»ñÈ¡µÄÁ¬½Ó£¬Ö±½Ó¹Ø±Õ¼´¿É
+				//å°†è¿æ¥è¿˜å›æ± ä¸­
+				//ä½¿ç”¨druidè·å–çš„è¿æ¥ï¼Œç›´æ¥å…³é—­å³å¯
 				conn.close();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new RuntimeException("Î´ÄÜ³É¹¦¹Ø±Õ" + e.getMessage());
+			throw new RuntimeException("æœªèƒ½æˆåŠŸå…³é—­" + e.getMessage());
+		}
+	}
+	public static void closeAll(Statement st,Connection conn){
+		try {
+			if(st != null) {
+				st.close();
+			}
+			if(conn != null) {
+				conn.close();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
