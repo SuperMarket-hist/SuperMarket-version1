@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.SuperMarket.utils.MD5Demo;
 import com.database.pool.JDBCTool;
-import com.mysql.jdbc.PreparedStatement;
 
 /**
  * Servlet implementation class Register
@@ -49,10 +50,9 @@ public class Register extends HttpServlet {
 			String insertResult = null;//设置插入结果返回标志
 			Connection getConn = null;
 			getConn = JDBCTool.getConn();//获取链接
-			PreparedStatement psta = null;
-			psta = (PreparedStatement) getConn.prepareStatement(selectStaff);
+			Statement sta = getConn.createStatement();
 			boolean canInsert = true;//设置插入允许标志
-			ResultSet rscanInsert = psta.executeQuery();
+			ResultSet rscanInsert = sta.executeQuery(selectStaff);
 			while(rscanInsert.next()) {
 				String staffId = rscanInsert.getString(1);
 				if(staffId.equals(staffid)) {
@@ -62,20 +62,20 @@ public class Register extends HttpServlet {
 			}
 			if(canInsert == true) {
 				//进行插入
-				int rsInsert = psta.executeUpdate(addUserSql);//插入成功返回受影响的行数
+				int rsInsert = sta.executeUpdate(addUserSql);//插入成功返回受影响的行数
 				if(rsInsert == 1) {
 					insertResult = "1";//设置插入成功时的返回标志
 					request.setAttribute("insertResult", insertResult);
 					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 					//添加用户成功，返回标志1，返回原网页，前端网页弹窗提醒
-					JDBCTool.closeAll(psta,getConn);//断开连接，释放资源
+					JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
 				}
 				else {
 					insertResult = "2";//设置插入失败时的返回标志
 					request.setAttribute("insertResult", insertResult);
 					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 					//添加用户失败，返回标志2，返回原网页，前端网页弹窗提醒
-					JDBCTool.closeAll(psta,getConn);//断开连接，释放资源
+					JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
 				}
 			}
 			else {
@@ -83,7 +83,7 @@ public class Register extends HttpServlet {
 				insertResult = "3";//当前用户不允许插入
 				request.setAttribute("insertResult", insertResult);
 				request.getRequestDispatcher("WEB-INF/SuperMarket/index.html").forward(request, response);
-				JDBCTool.closeAll(psta,getConn);//断开连接，释放资源
+				JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
 			}
 			
 			

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.SuperMarket.utils.MD5Demo;
 import com.database.pool.JDBCTool;
-import com.mysql.jdbc.PreparedStatement;
 
 /**
  * Servlet implementation class Login
@@ -45,9 +46,8 @@ public class Login extends HttpServlet {
 			getConn = JDBCTool.getConn();
 			System.out.println(getConn);
 			String selectStaff = "select * from staff where staffid='" + STAFFID + "'";
-			PreparedStatement psta = null;
-			psta = (PreparedStatement) getConn.prepareStatement(selectStaff);
-			ResultSet rs = psta.executeQuery();
+			Statement sta = getConn.createStatement();
+			ResultSet rs = sta.executeQuery(selectStaff);
 			boolean flag = false;
 			while (rs.next()) {
 				String userN = rs.getString(1);
@@ -65,7 +65,7 @@ public class Login extends HttpServlet {
 			else {
 				request.getRequestDispatcher("failed.html").forward(request, response);
 			}
-			JDBCTool.closeAll(psta,getConn);//断开连接，释放资源
+			JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

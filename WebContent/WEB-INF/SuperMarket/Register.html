@@ -33,23 +33,18 @@
 			    <input type="date" class="form-control" name="createtime" placeholder="createtime" required="required">
 			  </div>
 			  <div class="form-group">
-				<select name="type">
-					<option value="1">超级管理员</option>
-					<option value="2">仓库管理员</option>
-					<option value="3">收银员</option>
-					<option value="4">售货员</option>
+				<select name="type" style="height: 34px;width: 136px;padding-top: 6px;padding-bottom: 6px;font-size: 14px;margin-top: 2px;border-radius: 1px;">
+				  <option>请选择员工类型</option>
+				  <option value="1">超级管理员</option>
+				  <option value="2">仓库管理员</option>
+				  <option value="3">收银员</option>
+				  <option value="4">售货员</option>
 				</select>
-				<div class="btn-group dropdown" id="dropdown">
-					<button type="button" class="btn btn-defult dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						    可用 <span class="caret"></span>
-					</button>
-					<input type="hidden" name="dataflag" id="hidedrop_1" value="1" />
-					<ul class="dropdown-menu">
-						 <li value="1"><a href="#">可用</a></li>
-						 <li role="separator" class="divider"></li>
-						 <li value="0"><a href="#">禁用</a></li>
-					</ul>
-				</div>
+				<select name="dataflag"  style="height: 34px;width: 136px;padding-top: 6px;padding-bottom: 6px;font-size: 14px;margin-top: 2px;border-radius: 1px;">
+					<option>请设置帐号状态</option>
+					<option value="1">可用</option>
+					<option value="0">禁用</option>
+				</select>
 			  </div>
 			  <button type="submit" class="btn btn-primary">创建账号</button>
 			</form>
