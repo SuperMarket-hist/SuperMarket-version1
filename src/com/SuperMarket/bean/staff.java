@@ -12,9 +12,9 @@ public class staff {
 	private String staffname;	//员工姓名
 	private String password;	//登录密码
 	private int type;	//员工类型：1：超级管理员	2:仓库管理员	3：售货员	4：收银员
-	private int salary;	//员工薪资
+	private double salary;	//员工薪资
 	private int dataflag;	//帐号状态：1：可用	0：禁用
-	private Date createtime;	//入职时间
+	private String createtime;	//入职时间
 	public String getStaffid() {
 		return staffid;
 	}
@@ -39,11 +39,11 @@ public class staff {
 	public void setType(int type) {
 		this.type = type;
 	}
-	public int getSalary() {
+	public double getSalary() {
 		return salary;
 	}
-	public void setSalary(int salary) {
-		this.salary = salary;
+	public void setSalary(double d) {
+		this.salary = d;
 	}
 	public int getDataflag() {
 		return dataflag;
@@ -51,11 +51,11 @@ public class staff {
 	public void setDataflag(int dataflag) {
 		this.dataflag = dataflag;
 	}
-	public Date getCreatetime() {
+	public String getCreatetime() {
 		return createtime;
 	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
+	public void setCreatetime(String string) {
+		this.createtime = string;
 	}
 	
 }

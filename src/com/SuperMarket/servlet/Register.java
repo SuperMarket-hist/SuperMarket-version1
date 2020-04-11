@@ -1,18 +1,17 @@
 package com.SuperMarket.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.SuperMarket.bean.staff;
+import com.SuperMarket.utils.DoRegist;
 import com.SuperMarket.utils.MD5Demo;
-import com.database.pool.JDBCTool;
 
 /**
  * Servlet implementation class Register
@@ -34,64 +33,45 @@ public class Register extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		try {
 			response.setCharacterEncoding("utf-8");
 			request.setCharacterEncoding("utf-8");
-			String staffid = request.getParameter("staffid");	//员工编号
-			String staffname = request.getParameter("staffname");	//员工姓名
-			String password = request.getParameter("password");	//登录密码
-			int type = Integer.parseInt(request.getParameter("type"));	//员工类型：1.管理员，2.仓库管理员，3.收银员
-			double salary = Double.parseDouble(request.getParameter("salary"));	//员工薪资
-			int dataflag = Integer.parseInt(request.getParameter("dataflag"));	//帐号状态：1.可用，2.禁用
-			String createtime = request.getParameter("createtime");	//入职时间
-			String fpass = MD5Demo.md5(MD5Demo.md5(staffid) + password);//将明文password按照约定进行MD5加密，与数据库的值进行对比
-			String selectStaff = "select staffid from staff where staffid='" + staffid + "'";//查找是否有重名用户
-			String addUserSql = "INSERT INTO staff VALUE('" + staffid + "','" + staffname + "','" + fpass + "'," + type + "," + salary + "," + dataflag + ",'" + createtime + "')";
-			String insertResult = null;//设置插入结果返回标志
-			Connection getConn = null;
-			getConn = JDBCTool.getConn();//获取链接
-			Statement sta = getConn.createStatement();
-			boolean canInsert = true;//设置插入允许标志
-			ResultSet rscanInsert = sta.executeQuery(selectStaff);
-			while(rscanInsert.next()) {
-				String staffId = rscanInsert.getString(1);
-				if(staffId.equals(staffid)) {
-					canInsert = false;//查询不到相同staffid，允许插入，修改标志位为1
-					break;
-				}				
-			}
-			if(canInsert == true) {
-				//进行插入
-				int rsInsert = sta.executeUpdate(addUserSql);//插入成功返回受影响的行数
-				if(rsInsert == 1) {
-					insertResult = "1";//设置插入成功时的返回标志
-					request.setAttribute("insertResult", insertResult);
+			
+			String fpass = MD5Demo.md5(MD5Demo.md5(request.getParameter("staffid")) + request.getParameter("password"));//将明文password按照约定进行MD5加密，与数据库的值进行对比
+			
+			staff userstaff = new staff();//新建一个用户
+			userstaff.setStaffid(request.getParameter("staffid"));	//添加员工编号
+			userstaff.setStaffname(request.getParameter("staffname"));//添加员工姓名
+			userstaff.setPassword(fpass);	//添加登录密码
+			userstaff.setType(Integer.parseInt(request.getParameter("type")));	//添加员工类型：1.管理员，2.仓库管理员，3.收银员
+			userstaff.setSalary(Double.parseDouble(request.getParameter("salary")));	//添加员工薪资
+			userstaff.setDataflag(Integer.parseInt(request.getParameter("dataflag")));	//添加帐号状态：1.可用，2.禁用
+			userstaff.setCreatetime(request.getParameter("createtime"));	//添加入职时间
+			
+			int insertResult = 2;
+			try {
+				insertResult = DoRegist.userRegist(userstaff);
+
+				
+				if(insertResult == 1) {
+					request.setAttribute("1", insertResult);
 					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 					//添加用户成功，返回标志1，返回原网页，前端网页弹窗提醒
-					JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
 				}
-				else {
-					insertResult = "2";//设置插入失败时的返回标志
-					request.setAttribute("insertResult", insertResult);
+				else if(insertResult == 2) {
+					request.setAttribute("2", insertResult);
 					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 					//添加用户失败，返回标志2，返回原网页，前端网页弹窗提醒
-					JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
 				}
+				else{
+					request.setAttribute("3", insertResult);
+					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
+					//发现重复用户名，添加用户失败，返回标志2，返回原网页，前端网页弹窗提醒
+				}				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else {
-				//canInsert标志位为false，当前id不允许插入，返回标志3
-				insertResult = "3";//当前用户不允许插入
-				request.setAttribute("insertResult", insertResult);
-				request.getRequestDispatcher("WEB-INF/SuperMarket/index.html").forward(request, response);
-				JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
-			}
-			
-			
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	/**

@@ -1,18 +1,17 @@
 package com.SuperMarket.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
+import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.SuperMarket.bean.staff;
+import com.SuperMarket.utils.DoLogin;
 import com.SuperMarket.utils.MD5Demo;
-import com.database.pool.JDBCTool;
 
 /**
  * Servlet implementation class Login
@@ -36,36 +35,32 @@ public class Login extends HttpServlet {
 		// TODO Auto-generated method stub
 		try {
 			request.setCharacterEncoding("utf-8");
+			response.setCharacterEncoding("utf-8");
+			response.setContentType("text/html;charset=utf-8");
+			
 			String STAFFID = request.getParameter("inputUsername3");//获取staffid
 			String PASSWORD = request.getParameter("inputPassword3");//获取明文password
-			System.out.println("ID:" + STAFFID);
-			System.out.println("PASSWORD:" + PASSWORD);
 			String fpass = MD5Demo.md5(MD5Demo.md5(STAFFID) + PASSWORD);//将明文password按照约定进行MD5加密，与数据库的值进行对比
-			System.out.println("FINALPASS:" + fpass);
-			Connection getConn = null;
-			getConn = JDBCTool.getConn();
-			System.out.println(getConn);
-			String selectStaff = "select * from staff where staffid='" + STAFFID + "'";
-			Statement sta = getConn.createStatement();
-			ResultSet rs = sta.executeQuery(selectStaff);
-			boolean flag = false;
-			while (rs.next()) {
-				String userN = rs.getString(1);
-				String passW = rs.getString(3);
-				int stype = rs.getInt(6);
-				if(userN.equals(STAFFID)&&passW.equals(fpass)) {
-					if(stype == 1)
-						flag = true;
-					break;
-				}
-			}
-			if(flag) {
+			
+			staff userstaff = new staff();//新建员工
+			userstaff.setStaffid(STAFFID);
+			userstaff.setPassword(fpass);//设置员工的id与密码
+			
+			int flag = DoLogin.userLogin(userstaff);			
+			if(flag == 1) {
+				//密码正确，允许登录
 				request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 			}
-			else {
+			else if(flag == 2){
+				//密码错误
 				request.getRequestDispatcher("failed.html").forward(request, response);
 			}
-			JDBCTool.closeAll(sta,getConn);//断开连接，释放资源
+			else {
+				//账户冻结
+				PrintWriter out = response.getWriter();
+				out.print("账户已被冻结");
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
