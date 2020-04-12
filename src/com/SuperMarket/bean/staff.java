@@ -1,7 +1,5 @@
 package com.SuperMarket.bean;
 
-import java.sql.Date;
-
 /**
 * 编写员工类
 * @author JamsF
