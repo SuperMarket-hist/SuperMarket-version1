@@ -86,6 +86,7 @@ public class LoginFilter implements Filter {
 		}
 		
 		if(inputUsername3.equals("") || inputPassword3.equals("")) {
+			System.out.println("cookit为空");
 			return false;
 		}else
 			return true;

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,11 @@ public class Login extends HttpServlet {
 			int flag = DoLogin.userLogin(userstaff);			
 			if(flag == 1) {
 				//密码正确，允许登录
+				System.out.println("添加cookit");
+				Cookie inputUsername = new Cookie("inputUsername3",STAFFID);
+				Cookie inputPassword = new Cookie("inputPassword3", fpass);
+				response.addCookie(inputUsername);
+				response.addCookie(inputPassword);
 				request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 			}
 			else if(flag == 2){
