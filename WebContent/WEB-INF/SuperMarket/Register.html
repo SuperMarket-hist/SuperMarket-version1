@@ -4,7 +4,6 @@
 		<meta charset="utf-8">
 		<title>注册/Register</title>
 		<link rel="stylesheet" href="././js/bootstrap-3.3.7-dist/css/bootstrap.css" />
-		<link rel="stylesheet" href="css/index.css" />
 		<script src="././js/jquery-1.11.1/jquery.js"></script>
 		<script src="././js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 	</head>
@@ -14,7 +13,7 @@
 			<form method="post" action="Register" name = "Regist_form">
 			  <div class="form-group">
 			    <label for="exampleInputEmail1">员工编号</label>
-			    <input type="text" class="form-control" name="staffid" autocomplete="off" placeholder="staffid" required="required" onblur="loadCheck()"title="Warning"
+			    <input type="text" class="form-control" name="staffid" id="inputId" autocomplete="off" placeholder="staffid" required="required" onblur="loadCheck()" title="Warning"
 					data-container="body" data-toggle="popover" data-placement="right"
 					data-content="存在重复员工编号，不允许注册">
 			  </div>
@@ -28,7 +27,7 @@
 			  </div>
 			  <div class="form-group">
 			    <label for="exampleInputEmail1">员工薪资</label>
-			    <input type="text" class="form-control" name="salary" placeholder="salary" aria-label="Amount (to the nearest dollar) required="required">
+			    <input type="text" class="form-control" name="salary" placeholder="salary" required="required">
 			  </div>
 			  <div class="form-group">
 			    <label for="exampleInputEmail1">入职时间</label>
@@ -56,10 +55,10 @@
 					var staffId = document.Regist_form.staffid.value;
 					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
 					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
-					xmlhttp.onreadystatechange=getResult;
 					xmlhttp.open("POST","checkIdAvailable",true);
 					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-					xmlhttp.send("staffId="+staffId);		
+					xmlhttp.send("staffId="+staffId);
+					xmlhttp.onreadystatechange=getResult;
 				}
 				
 				function getResult(){
@@ -67,10 +66,13 @@
 						if(xmlhttp.status==200){
 							var rec=xmlhttp.responseText;
 							if(rec == "false"){
+								$('#inputId').popover('show');
 								document.getElementById("submit_btn").className="btn btn-primary disabled"
-								$(function (){
-									$("[data-toggle='popover']").popover();
-								});
+								
+							}
+							else{
+								$('#inputId').popover('hide');
+								document.getElementById("submit_btn").className="btn btn-primary"
 							}
 						}
 						else{
