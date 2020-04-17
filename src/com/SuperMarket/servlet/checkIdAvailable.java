@@ -49,7 +49,7 @@ public class checkIdAvailable extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		String staffId = request.getParameter("staffId");//获取Ajax传来的待检测员工Id
+		String staffId = request.getParameter("staffId");//获取Ajax传来的待检测的员工Id
 		
 		staff checkStaffId = new staff();//新建一个用户以便调用检查方法
 		checkStaffId.setStaffid(staffId);//设置员工用户的ID

@@ -3,9 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>注册/Register</title>
-		<link rel="stylesheet" href="././js/bootstrap-3.3.7-dist/css/bootstrap.css" />
-		<script src="././js/jquery-1.11.1/jquery.js"></script>
-		<script src="././js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+		<link rel="stylesheet" href="../js/bootstrap-3.3.7-dist/css/bootstrap.css" />
+		<script src="../js/jquery-1.11.1/jquery.js"></script>
+		<script src="../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 	</head>
 	<body>
 		<div class="col-lg-2"></div>
@@ -55,7 +55,7 @@
 					var staffId = document.Regist_form.staffid.value;
 					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
 					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
-					xmlhttp.open("POST","checkIdAvailable",true);
+					xmlhttp.open("POST","../checkIdAvailable",true);
 					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 					xmlhttp.send("staffId="+staffId);
 					xmlhttp.onreadystatechange=getResult;

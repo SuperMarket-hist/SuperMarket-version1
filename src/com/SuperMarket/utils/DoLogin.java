@@ -44,7 +44,7 @@ public class DoLogin {
 		int loginflag = 0;
 		while (rs.next()) {
 			String passW = rs.getString(3);//获取数据库中的密码
-			int stype = rs.getInt(4);//获取帐号状态信息
+			int stype = rs.getInt(6);//获取帐号状态信息
 			if(passW.equals(userstaff.getPassword())) {//密码匹配成功
 				if(stype == 1) {
 					//帐号状态为可用

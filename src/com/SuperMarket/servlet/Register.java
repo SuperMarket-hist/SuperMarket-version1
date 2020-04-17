@@ -54,19 +54,14 @@ public class Register extends HttpServlet {
 				
 				if(insertResult == 1) {
 					request.setAttribute("1", insertResult);
-					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
+					request.getRequestDispatcher("SuperMarket/Register.html").forward(request, response);
 					//添加用户成功，返回标志1，返回原网页，前端网页弹窗提醒
 				}
-				else if(insertResult == 2) {
+				else {
 					request.setAttribute("2", insertResult);
 					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
 					//添加用户失败，返回标志2，返回原网页，前端网页弹窗提醒
-				}
-				else{
-					request.setAttribute("3", insertResult);
-					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
-					//发现重复用户名，添加用户失败，返回标志2，返回原网页，前端网页弹窗提醒
-				}				
+				}			
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
