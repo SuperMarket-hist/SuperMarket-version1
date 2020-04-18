@@ -35,6 +35,7 @@ public class Register extends HttpServlet {
 		// TODO Auto-generated method stub
 			response.setCharacterEncoding("utf-8");
 			request.setCharacterEncoding("utf-8");
+			PrintWriter pw = response.getWriter();
 			
 			String fpass = MD5Demo.md5(MD5Demo.md5(request.getParameter("staffid")) + request.getParameter("password"));//将明文password按照约定进行MD5加密，与数据库的值进行对比
 			
@@ -50,18 +51,7 @@ public class Register extends HttpServlet {
 			int insertResult = 2;
 			try {
 				insertResult = DoRegist.userRegist(userstaff);
-
-				
-				if(insertResult == 1) {
-					request.setAttribute("1", insertResult);
-					request.getRequestDispatcher("SuperMarket/Register.html").forward(request, response);
-					//添加用户成功，返回标志1，返回原网页，前端网页弹窗提醒
-				}
-				else {
-					request.setAttribute("2", insertResult);
-					request.getRequestDispatcher("WEB-INF/SuperMarket/Register.html").forward(request, response);
-					//添加用户失败，返回标志2，返回原网页，前端网页弹窗提醒
-				}			
+				pw.print(insertResult);//向Ajax传回注册结果  1:成功  2:失败
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
