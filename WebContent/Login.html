@@ -41,13 +41,19 @@
 			        </label>
 			      </div>
 				  <div class="forgpass col-lg-6 text-right">
-					  <a tabindex="0" id="forg" class="btn btn-sm btn-info" role="button" data-placement="top" data-toggle="popover" data-trigger="focus" title="忘记密码" data-content="如果您忘记了登录密码,请与系统管理员联系">忘记密码</a>
+					  <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal">忘记密码</button>
 				  </div>
-				  <script>
-				  $("#forg").click(function () { 
-				  	$('#forg').popover('show');
-					})
-				  </script>
+				  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					    <div class="modal-dialog">
+					        <div class="modal-content">
+					            <div class="modal-header">
+					                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					                <h4 class="modal-title" id="myModalLabel">提示 / Tips</h4>
+					            </div>
+					            <div class="modal-body">如果您忘记了自己的密码，请与您的系统管理员联系</div>
+					        </div><!-- /.modal-content -->
+					    </div><!-- /.modal -->
+					</div>
 			    </div>
 			  </div>
 			  <div class="form-group text-center">
@@ -66,10 +72,11 @@
 							document.getElementById("alerttext").innerHTML="用户名或密码为空";
 							$('.alert-danger').removeClass('hide').addClass('in');
 						}
-						else{$('.alert-danger').removeClass('in').addClass('hide');
+						else{
+							$('.alert-danger').removeClass('in').addClass('hide');
 							if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
 							else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
-							xmlhttp.open("POST","Login",true);
+							xmlhttp.open("POST","./Login",true);
 							xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 							xmlhttp.send("inputStaffid="+staffId+"&inputPassword="+password);
 							xmlhttp.onreadystatechange=getResult;
@@ -93,7 +100,8 @@
 								}
 							}
 							else{
-								alert("连接失败");
+								document.getElementById("alerttext").innerHTML="服务器连接失败";
+								$('.alert-danger').removeClass('hide').addClass('in');
 							}
 						}
 					}
