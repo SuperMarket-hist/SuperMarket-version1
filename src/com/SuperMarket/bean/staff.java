@@ -3,10 +3,6 @@ package com.SuperMarket.bean;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
-
 import com.database.pool.JDBCTool;
 
 /**
