@@ -7,10 +7,45 @@ package com.SuperMarket.bean;
 public class pro_goods {
 	private String GoodsID;//商品编号
 	private String GoodsName;//商品名称
+	private String Specs;//商品规格
+	private String Unit;//商品单位
 	private double MarketPrice;//进价
 	private double SaPrice;//售价
+	private double Discount;//折扣
 	private String CTime;//生产日期
 	private String STime;//有效期
+	private String Category;//商品类别
+	public String getSpecs() {
+		return Specs;
+	}
+	public void setSpecs(String specs) {
+		Specs = specs;
+	}
+	public String getUnit() {
+		return Unit;
+	}
+	public void setUnit(String unit) {
+		Unit = unit;
+	}
+	public double getDiscount() {
+		return Discount;
+	}
+	public void setDiscount(double discount) {
+		Discount = discount;
+	}
+	public String getCategory() {
+		return Category;
+	}
+	public void setCategory(String category) {
+		Category = category;
+	}
+	public String getFactory() {
+		return Factory;
+	}
+	public void setFactory(String factory) {
+		Factory = factory;
+	}
+	private String Factory;//供应商
 	public String getGoodsID() {
 		return GoodsID;
 	}
