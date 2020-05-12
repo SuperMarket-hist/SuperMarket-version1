@@ -8,9 +8,6 @@
  */
 package com.SuperMarket.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * <p>Title: wallet</p>  
  * <p>Description: 钱包账户been，有支出，收入，利润</p>  

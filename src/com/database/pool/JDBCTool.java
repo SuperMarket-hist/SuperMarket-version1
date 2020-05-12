@@ -23,6 +23,7 @@ public class JDBCTool {
 	protected static Statement s = null;
 	protected static ResultSet rs = null;
 	protected static Connection conn = null;
+	
 	static {
 		try {
 			Properties p = new Properties();
@@ -40,6 +41,7 @@ public class JDBCTool {
 			e.printStackTrace();
 		}
 	}
+	
 	public static DataSource getDataSource() {
 		try {
 			return dataSource;
@@ -49,6 +51,7 @@ public class JDBCTool {
 		}
 		return null;
 	}
+	
 	public static Connection getConn() {
 		//可以直接通过数据源获取可用的链接
 		try {
@@ -63,6 +66,7 @@ public class JDBCTool {
 			throw new RuntimeException("获取链接失败，" + e.getMessage());
 		}
 	}
+	
 	/**
 	 * 执行INSERT/UPDATE/DELETE SQL语句
 	 * @param sql SQL语句，字符串类型
@@ -80,6 +84,7 @@ public class JDBCTool {
 		}
 		return result;
 	}
+	
 	/**
 	 * 执行SELECT SQL语句
 	 * @param sql SQL语句，字符串类型
@@ -97,6 +102,7 @@ public class JDBCTool {
 		}
 		return rs;
 	}
+	
 	/**
 	 * 执行动态SQL语句
 	 * @param sql 含有参数的动态SQL语句。 
@@ -114,6 +120,7 @@ public class JDBCTool {
 		}
 		return ps;
 	}
+	
 	/**
 	 * 事务回滚
 	 */
@@ -126,6 +133,7 @@ public class JDBCTool {
 		}
 		
 	}
+	
 	/**
 	 * 关闭数据库连接对象
 	 */
@@ -165,6 +173,7 @@ public class JDBCTool {
 			throw new RuntimeException("未能成功关闭" + e.getMessage());
 		}
 	}
+	
 	public static void closeAll(Statement st,Connection conn){
 		try {
 			if(st != null) {
