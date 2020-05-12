@@ -38,6 +38,7 @@ public class DoWallet {
 					wt.setOutcome(rs.getDouble(1));
 					wt.setProfit(rs.getDouble(3));
 				//	list.add(wt);
+					
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

@@ -40,6 +40,7 @@ public class WalletInfo extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
 		
+		
 		//List<wallet> list = new ArrayList<wallet>();
 		wallet wt = new DoWallet().walletQuery();
 		request.setAttribute("wallet", wt);

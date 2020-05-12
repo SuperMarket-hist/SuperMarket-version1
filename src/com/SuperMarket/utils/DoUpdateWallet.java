@@ -35,6 +35,7 @@ public class DoUpdateWallet {
 			System.out.println("修改成功");
 			flag = true;
 		}
+		
 		return flag;
 	}
 }

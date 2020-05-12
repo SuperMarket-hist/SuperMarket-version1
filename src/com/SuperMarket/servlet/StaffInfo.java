@@ -53,6 +53,7 @@ public class StaffInfo extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		
 		int type = Integer.parseInt(request.getParameter("staffType"));
 		String key = request.getParameter("key");
 		List<staff> list = new DoStaff().staffQuery(type, key);

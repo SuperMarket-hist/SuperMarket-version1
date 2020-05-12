@@ -75,6 +75,7 @@ public class DoStaff {
 			JDBCTool.close();
 		} catch (SQLException e) {
 			// TODO: handle exception
+			System.out.println("查询失败");
 			e.printStackTrace();
 		}
 		return list;
