@@ -1,6 +1,8 @@
 package com.SuperMarket.servlet;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.SuperMarket.bean.staff;
+import com.SuperMarket.utils.DoStaff;
 
 /**
  * Servlet implementation class StaffInfo
@@ -52,9 +55,9 @@ public class StaffInfo extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		int type = Integer.parseInt(request.getParameter("staffType"));
 		String key = request.getParameter("key");
-		StringBuffer sb = new staff().staffQuery(type, key);
+		List<staff> list = new DoStaff().staffQuery(type, key);
 		HttpSession session = request.getSession();
-		session.setAttribute("search", sb);
+		session.setAttribute("search", list);
 		response.sendRedirect("StaffInfo.jsp");
 		doGet(request, response);
 	}

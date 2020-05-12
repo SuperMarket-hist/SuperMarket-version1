@@ -24,19 +24,20 @@ import com.database.pool.JDBCTool;
  */
 public class DoWallet {
 	/* 查询钱包 */
-	public List walletQuery() {
-		List<wallet> list = new ArrayList<wallet>();
+	public wallet walletQuery() {
+	//	List<wallet> list = new ArrayList<wallet>();
 		String sqlQuery = "select * from wallet";
 		ResultSet rs = JDBCTool.executeQuery(sqlQuery);
 		System.out.println(sqlQuery);
+		wallet wt = new wallet();
 		if(rs != null) {
 			try {
 				while(rs.next()) {
-					wallet wt = new wallet();
+					//wallet wt = new wallet();
 					wt.setIncome(rs.getDouble(2));
 					wt.setOutcome(rs.getDouble(1));
 					wt.setProfit(rs.getDouble(3));
-					list.add(wt);
+				//	list.add(wt);
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -45,7 +46,8 @@ public class DoWallet {
 		}else {
 			System.out.println("查询失败");
 		}
-		return list;
+		JDBCTool.close();
+		return wt;
 		
 	}
 
