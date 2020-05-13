@@ -8,7 +8,7 @@ public class orders {
 	private String OrderNo;//订单编号
 	private String GoodsID;//商品编号
 	private String UserId;//会员账号
-	private int GoodsNum;//商品数量
+	private double GoodsNum;//商品数量
 	private String staffid;//收银员工号
 	public String getOrderNo() {
 		return OrderNo;
@@ -28,7 +28,7 @@ public class orders {
 	public void setUserId(String userId) {
 		UserId = userId;
 	}
-	public int getGoodsNum() {
+	public double getGoodsNum() {
 		return GoodsNum;
 	}
 	public void setGoodsNum(int goodsNum) {

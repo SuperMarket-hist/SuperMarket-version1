@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import com.SuperMarket.bean.orders;
 import com.SuperMarket.bean.pro_goods;
+import com.SuperMarket.bean.staff;
 import com.SuperMarket.bean.vip_cus;
 import com.database.pool.JDBCTool;
 
@@ -98,6 +99,56 @@ public class DoAdd {
 		int  InsertResult = psta.executeUpdate();
 		
 		return InsertResult;
+	}
+	
+	/**
+	 * 
+	 * @Title: userRegist
+	 * @Description: 执行注册员工的方法
+	 * @author JamsF
+	 * @date 2020年5月13日上午8:38:11
+	 * @param userstaff
+	 * @return int
+	 * @throws SQLException
+	 */
+	public static int userRegist(staff userstaff) throws SQLException {
+		
+		/*
+		 * 返回数据说明：
+		 * 1、添加成功
+		 * 2、添加失败
+		 * 3、发现重复用户名
+		 */		
+		boolean finduser = DoSelect.DoSelectStaff(userstaff);
+		if(finduser == true) {
+			//发现重复用户名，拒绝添加
+			return 3;
+		}
+		
+		else {
+			//未找到重复用户名，允许添加
+			
+			String AddUserSQL = "INSERT INTO staff VALUE(?,?,?,?,?,?,?)";
+			
+			PreparedStatement psta = JDBCTool.executePreparedStatement(AddUserSQL);
+			
+			psta.setString(1, userstaff.getStaffid());
+			psta.setString(2, userstaff.getStaffname());
+			psta.setString(3, userstaff.getPassword());
+			psta.setInt(4, userstaff.getType());
+			psta.setDouble(5, userstaff.getSalary());
+			psta.setInt(6, userstaff.getDataflag());
+			psta.setString(7, userstaff.getCreatetime());
+			
+			int rsInsert = psta.executeUpdate();//插入成功返回受影响的行数
+			
+			if(rsInsert == 1) {
+				return 1;
+			}
+			else
+				return 2;
+		}
+		
 	}
 
 }

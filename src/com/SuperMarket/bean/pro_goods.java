@@ -15,6 +15,7 @@ public class pro_goods {
 	private String CTime;//生产日期
 	private String STime;//有效期
 	private String Category;//商品类别
+	private String Factory;//供应商
 	public String getSpecs() {
 		return Specs;
 	}
@@ -45,7 +46,6 @@ public class pro_goods {
 	public void setFactory(String factory) {
 		Factory = factory;
 	}
-	private String Factory;//供应商
 	public String getGoodsID() {
 		return GoodsID;
 	}

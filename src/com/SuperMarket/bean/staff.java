@@ -1,28 +1,5 @@
 package com.SuperMarket.bean;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.database.pool.JDBCTool;
-
-/**
-* 编写员工类
-* @author JamsF
-* @version 创建时间：2020年3月3日 下午4:23:56
-*/
-
-/**
- * <p>
- * Title: staff
- * </p>
- * <p>
- * Description:
- * </p>
- * 
- * @author 灵风
- * @date 2020年4月18日
- */
-
 public class staff {
 	private String staffid; // 员工编号
 	private String staffname; // 员工姓名
