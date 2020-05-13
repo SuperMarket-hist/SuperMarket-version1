@@ -31,8 +31,8 @@ public class orders {
 	public double getGoodsNum() {
 		return GoodsNum;
 	}
-	public void setGoodsNum(int goodsNum) {
-		GoodsNum = goodsNum;
+	public void setGoodsNum(double d) {
+		GoodsNum = d;
 	}
 	public String getStaffid() {
 		return staffid;

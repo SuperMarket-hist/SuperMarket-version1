@@ -7,21 +7,21 @@ package com.SuperMarket.bean;
 public class wst_goods {
 	
 	private String GoodsId;//商品编号
-	private int GoodsStock;//商品库存量
-	private int WarnStock;//库存预警值（库存量少于该值，发生预警）
+	private double GoodsStock;//商品库存量
+	private double WarnStock;//库存预警值（库存量少于该值，发生预警）
 	public String getGoodsId() {
 		return GoodsId;
 	}
 	public void setGoodsId(String goodsId) {
 		GoodsId = goodsId;
 	}
-	public int getGoodsStock() {
+	public double getGoodsStock() {
 		return GoodsStock;
 	}
 	public void setGoodsStock(int goodsStock) {
 		GoodsStock = goodsStock;
 	}
-	public int getWarnStock() {
+	public double getWarnStock() {
 		return WarnStock;
 	}
 	public void setWarnStock(int warnStock) {

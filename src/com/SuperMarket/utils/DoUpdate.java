@@ -62,7 +62,6 @@ public class DoUpdate {
 		String sqlUpdate = "update wallet set "+element+"="+vlaue+"";
 		
 		int result = 0;
-		System.out.println(sqlUpdate);
 		result = JDBCTool.executeUpdate(sqlUpdate);
 		if(result > 0) {
 			System.out.println("修改成功");
