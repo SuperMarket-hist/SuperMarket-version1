@@ -104,8 +104,92 @@ public class DoUpdate {
 		else
 			//用户不存在，返回标志
 			return -1;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoUpdatePassword
+	 * @Description: 为员工提供修改密码功能的方法
+	 * @author JamsF
+	 * @date 2020年5月14日下午3:13:53
+	 * @param staffid
+	 * @param NewPassword
+	 * @return boolean
+	 * @throws SQLException
+	 */
+	public boolean DoUpdatePassword(String staffid,String NewPassword) throws SQLException {
 		
+		String UpdateStaffInfoSQL = "UPDATE staff set password=? WHERE staffid=?";
+			
+		PreparedStatement psta = JDBCTool.executePreparedStatement(UpdateStaffInfoSQL);
+		psta.setString(1, NewPassword);
+		psta.setString(2, staffid);
 		
+		int UpdateResult = psta.executeUpdate();
+			
+		if(UpdateResult == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: DoSaleUpdateGoods
+	 * @Description: 商品销售后的仓库储存数量更改
+	 * @author JamsF
+	 * @date 2020年5月14日下午3:00:55
+	 * @param GoodsId
+	 * @param GoodsNumber
+	 * @return boolean
+	 * @throws SQLException 
+	 */
+	public boolean DoSaleUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
+		
+		boolean Updateflag = false;
+		
+		String SaleUpdateGoodsSQL ="UPDATE wst_goods SET GoodsStock = ? WHERE GoodsId = ?";
+		
+		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SaleUpdateGoodsSQL);
+		psta.setDouble(1, GoodsNumber);
+		psta.setString(2, GoodsId);
+		
+		int UpdateResult = psta.executeUpdate();
+		
+		if(UpdateResult == 1)
+			Updateflag = true;
+		
+		return Updateflag;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoReturnUpdateGoods
+	 * @Description: 商品退货的仓库储存数量更改
+	 * @author JamsF
+	 * @date 2020年5月14日下午3:08:23
+	 * @param GoodsId
+	 * @param GoodsNumber
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean DoReturnUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
+
+		boolean Updateflag = false;
+		
+		String SaleUpdateGoodsSQL ="UPDATE wst_goods SET GoodsStock = ? WHERE GoodsId = ?";
+		
+		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SaleUpdateGoodsSQL);
+		psta.setDouble(1, GoodsNumber);
+		psta.setString(2, GoodsId);
+		
+		int UpdateResult = psta.executeUpdate();
+		
+		if(UpdateResult == 1)
+			Updateflag = true;
+		
+		return Updateflag;
 	}
 
 }
