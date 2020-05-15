@@ -4,7 +4,7 @@ public class staff {
 	private String staffid; // 员工编号
 	private String staffname; // 员工姓名
 	private String password; // 登录密码
-	private int type; // 员工类型：1：超级管理员 2:仓库管理员 3：售货员 4：收银员
+	private int type; // 员工类型：1：超级管理员 2:仓库管理员 3：办公室  4：收银员 5：进货部
 	private double salary; // 员工薪资
 	private int dataflag; // 帐号状态：1：可用 0：禁用
 	private String createtime; // 入职时间
