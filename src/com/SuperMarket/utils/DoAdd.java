@@ -111,7 +111,7 @@ public class DoAdd {
 	 * @return int
 	 * @throws SQLException
 	 */
-	public static int userRegist(staff userstaff) throws SQLException {
+	public static int DoAddStaff(staff userstaff) throws SQLException {
 		
 		/*
 		 * 返回数据说明：

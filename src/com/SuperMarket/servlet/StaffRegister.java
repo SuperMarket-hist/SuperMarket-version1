@@ -14,16 +14,16 @@ import com.SuperMarket.utils.DoAdd;
 import com.SuperMarket.utils.MD5Demo;
 
 /**
- * Servlet implementation class Register
+ * Servlet implementation class StaffRegister
  */
-@WebServlet("/Register")
-public class Register extends HttpServlet {
+@WebServlet("/StaffRegister")
+public class StaffRegister extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Register() {
+    public StaffRegister() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -50,7 +50,7 @@ public class Register extends HttpServlet {
 			
 			int insertResult = 2;
 			try {
-				insertResult = DoAdd.userRegist(userstaff);
+				insertResult = DoAdd.DoAddStaff(userstaff);
 				pw.print(insertResult);//向Ajax传回注册结果  1:成功  2:失败
 				
 			} catch (SQLException e) {

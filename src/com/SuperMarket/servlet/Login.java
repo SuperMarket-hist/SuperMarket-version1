@@ -9,9 +9,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.SuperMarket.bean.staff;
 import com.SuperMarket.utils.DoLogin;
+import com.SuperMarket.utils.DoSelect;
 import com.SuperMarket.utils.MD5Demo;
 
 /**
@@ -51,7 +53,6 @@ public class Login extends HttpServlet {
 			
 			String STAFFID = request.getParameter("inputStaffid");//获取staffid
 			String PASSWORD = request.getParameter("inputPassword");//获取明文password
-			System.out.println(STAFFID + PASSWORD);
 			String fpass = MD5Demo.md5(MD5Demo.md5(STAFFID) + PASSWORD);//将明文password按照约定进行MD5加密，与数据库的值进行对比
 			
 			staff userstaff = new staff();//新建员工
@@ -63,10 +64,12 @@ public class Login extends HttpServlet {
 			
 			if(flag == 1) {
 				//密码正确，允许登录
+				HttpSession session = request.getSession();
+				session.setAttribute("staffid", STAFFID);
+				session.setAttribute("type", DoSelect.DoSelectStaffType(STAFFID));//在session中存放当前员工类型，为filter做准备
+				
 				Cookie inputStaffid = new Cookie("inputStaffid",STAFFID);
-				Cookie inputPassword = new Cookie("inputPassword", fpass);
 				response.addCookie(inputStaffid);
-				response.addCookie(inputPassword);
 				pw.print(flag);
 			}
 			else if(flag == 2){

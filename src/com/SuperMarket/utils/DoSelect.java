@@ -93,7 +93,7 @@ public class DoSelect {
 	 * @author JamsF
 	 * @date 2020年5月13日下午2:34:30
 	 * @param staffid
-	 * @return
+	 * @return int
 	 * @throws SQLException
 	 */
 	public static int DoSelectStaffType(String staffid) throws SQLException {
@@ -120,7 +120,7 @@ public class DoSelect {
 	 * @Description: 执行查询所有员工信息的方法
 	 * @author JamsF
 	 * @date 2020年5月13日上午9:28:44
-	 * @return
+	 * @return ArrayList<staff>
 	 * @throws SQLException
 	 */
 	public static ArrayList<staff> DoSelectStaff() throws SQLException {
@@ -155,7 +155,7 @@ public class DoSelect {
 	 * @date 2020年5月13日上午9:32:58
 	 * @return wallet
 	 */
-	public wallet DoSelectWallet() {
+	public static wallet DoSelectWallet() {
 		
 		wallet wt = new wallet();
 		
@@ -186,10 +186,10 @@ public class DoSelect {
 	 * @author JamsF
 	 * @date 2020年5月13日下午2:56:21
 	 * @param GoodsId
-	 * @return
+	 * @return pro_goods
 	 * @throws SQLException
 	 */
-	public pro_goods DoSelectGoods(String GoodsId) throws SQLException {
+	public static pro_goods DoSelectGoods(String GoodsId) throws SQLException {
 		pro_goods Goods = new pro_goods();
 		
 		String SelectGoodsSQL = "SELECT * FROM pro_goods WHERE GoodsId = ?";
@@ -214,6 +214,46 @@ public class DoSelect {
 		return Goods;
 	}
 	
+	/**
+	 * 
+	 * @Title: DoSelectGoods
+	 * @Description: 为仓库管理员提供查询指定商品信息的方法
+	 * @author JamsF
+	 * @date 2020年5月13日下午3:23:10
+	 * @return ArrayList<store_goods>
+	 * @throws SQLException
+	 */
+	public static ArrayList<store_goods> DoSelectGoodsInfo(String GoodsId) throws SQLException {
+		
+		ArrayList<store_goods> list = new ArrayList<store_goods>();
+		
+		String SelectGoodsSQL = "SELECT pro_goods.`GoodsId`,GoodsName,Specs,Unit,MarketPrice,SaPrice,Discount,CTime,STime,Category,Factory,wst_goods.GoodsStock,wst_goods.`WarnStock` FROM pro_goods,wst_goods WHERE pro_goods.`GoodsId` = wst_goods.`GoodsId` AND wst_goods.`GoodsId`=?";
+		
+		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectGoodsSQL);
+		psta.setString(1, GoodsId);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		while(rs.next()) {
+			store_goods Goods = new store_goods();
+			Goods.setGoodsID(rs.getString(1));
+			Goods.setGoodsName(rs.getString(2));
+			Goods.setSpecs(rs.getString(3));
+			Goods.setUnit(rs.getString(4));
+			Goods.setMarketPrice(rs.getDouble(5));
+			Goods.setSaPrice(rs.getDouble(6));
+			Goods.setDiscount(rs.getDouble(7));
+			Goods.setCTime(rs.getString(8));
+			Goods.setSTime(rs.getString(9));
+			Goods.setCategory(rs.getString(10));
+			Goods.setFactory(rs.getString(11));	
+			Goods.setGoodsStock(rs.getInt(12));
+			Goods.setWarnStock(rs.getInt(13));
+			list.add(Goods);
+		}
+		return list;
+	}
+	
 	
 	/**
 	 * 
@@ -221,10 +261,10 @@ public class DoSelect {
 	 * @Description: 为仓库管理员提供查询所有商品信息的方法
 	 * @author JamsF
 	 * @date 2020年5月13日下午3:23:10
-	 * @return
+	 * @return ArrayList<store_goods>
 	 * @throws SQLException
 	 */
-	public ArrayList<store_goods> DoSelectGoods() throws SQLException {
+	public static ArrayList<store_goods> DoSelectAllGoodsInfo() throws SQLException {
 		
 		ArrayList<store_goods> list = new ArrayList<store_goods>();
 		
@@ -254,6 +294,50 @@ public class DoSelect {
 		return list;
 	}
 	
+	
+	/**
+	 * 
+	 * @Title: DoSelectWarnGoods
+	 * @Description: 为仓库管理员提供查询库存预警商品信息的方法
+	 * @author JamsF
+	 * @date 2020年5月13日下午3:33:51
+	 * @param warndate
+	 * @return ArrayList<store_goods>
+	 * @throws SQLException
+	 */
+	public static ArrayList<store_goods> DoSelectWarnGoods() throws SQLException{
+		
+		ArrayList<store_goods> list = new ArrayList<store_goods>();
+		
+		String SelectWarnGoodsSQL = "SELECT pro_goods.`GoodsId`,GoodsName,Specs,Unit,MarketPrice,SaPrice,Discount,CTime,STime,Category,Factory,wst_goods.GoodsStock,wst_goods.`WarnStock` FROM pro_goods,wst_goods WHERE pro_goods.`GoodsId` = wst_goods.`GoodsId` AND GoodsStock < WarnStock";
+		
+		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectWarnGoodsSQL);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		while(rs.next()) {
+			store_goods Goods = new store_goods();
+			Goods.setGoodsID(rs.getString(1));
+			Goods.setGoodsName(rs.getString(2));
+			Goods.setSpecs(rs.getString(3));
+			Goods.setUnit(rs.getString(4));
+			Goods.setMarketPrice(rs.getDouble(5));
+			Goods.setSaPrice(rs.getDouble(6));
+			Goods.setDiscount(rs.getDouble(7));
+			Goods.setCTime(rs.getString(8));
+			Goods.setSTime(rs.getString(9));
+			Goods.setCategory(rs.getString(10));
+			Goods.setFactory(rs.getString(11));	
+			Goods.setGoodsStock(rs.getInt(12));
+			Goods.setWarnStock(rs.getInt(13));
+			list.add(Goods);
+		}
+		
+		return list;
+		
+	}
+	
+	
 	/**
 	 * 
 	 * @Title: DoSelectWarnGoods
@@ -261,16 +345,17 @@ public class DoSelect {
 	 * @author JamsF
 	 * @date 2020年5月13日下午3:33:51
 	 * @param warndate
-	 * @return
+	 * @return ArrayList<store_goods>
 	 * @throws SQLException
 	 */
-	public ArrayList<store_goods> DoSelectWarnGoods(String warndate) throws SQLException{
+	public static ArrayList<store_goods> DoSelectDateGoods(String warndate) throws SQLException{
 		
 		ArrayList<store_goods> list = new ArrayList<store_goods>();
 		
 		String SelectWarnGoodsSQL = "SELECT pro_goods.`GoodsId`,GoodsName,Specs,Unit,MarketPrice,SaPrice,Discount,CTime,STime,Category,Factory,wst_goods.GoodsStock,wst_goods.`WarnStock` FROM pro_goods,wst_goods WHERE pro_goods.`GoodsId` = wst_goods.`GoodsId` AND pro_goods.`STime` < ?";
 		
 		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectWarnGoodsSQL);
+		psta.setString(1, warndate);
 		
 		ResultSet rs = psta.executeQuery();
 		
@@ -304,10 +389,10 @@ public class DoSelect {
 	 * @author JamsF
 	 * @date 2020年5月13日下午3:07:02
 	 * @param OrderNo
-	 * @return
+	 * @return ArrayList<orders>
 	 * @throws SQLException
 	 */
-	public ArrayList<orders> DoSelectOrders(String OrderNo) throws SQLException {
+	public static ArrayList<orders> DoSelectOrders(String OrderNo) throws SQLException {
 		
 		ArrayList<orders> list = new ArrayList<orders>();
 		

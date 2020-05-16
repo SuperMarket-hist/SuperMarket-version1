@@ -8,9 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class LoginFilter
@@ -41,30 +41,26 @@ public class LoginFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
 		// place your code here
-		System.out.println("LoginFilter doFilter");
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
 		StringBuffer url = req.getRequestURL();
 		
-		System.out.println("请求的URL：" + url.toString());
 		/* 找到此页面的name */
 		//int idx = url.lastIndexOf("/");
 		//String urlname = url.substring(idx + 1);
 		String urlname = url.toString();
 		
 		if(!urlname.equals("http://localhost:8080/SuperMarket-vresion1/Login.html")) {
-			System.out.println("不是登陆页面，进行过滤");
 			if(!isLogin(req)) {
-				System.out.println("没有登录过或者账号密码错误，跳转到登录界面");
 				resp.sendRedirect("http://localhost:8080/SuperMarket-vresion1/Login.html");
-			}else {
-				System.out.println("已经登录，进行下一步");
+			}
+			else {
 				// pass the request along the filter chain
 				chain.doFilter(request, response);
 			}
-		}else {
-			System.out.println("是登陆页面，不进行过滤");
+		}
+		else {
 			// pass the request along the filter chain
 			chain.doFilter(request, response);
 		}
@@ -72,23 +68,9 @@ public class LoginFilter implements Filter {
 	}
 	
 	private boolean isLogin(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		String inputStaffid = "";
-		String inputPassword = "";
+		HttpSession session = request.getSession();
 		
-		if(cookies != null && cookies.length > 0) {
-			for(Cookie  cookie : cookies) {
-				if(cookie.getName().equals("inputStaffid")) {
-					inputStaffid = cookie.getValue();
-				}
-				else if(cookie.getName().equals("inputPassword")) {
-					inputPassword = cookie.getValue();
-				}
-			}
-		}
-		
-		if(inputStaffid.equals("") || inputPassword.equals("")) {
-			System.out.println("cookit为空");
+		if((session.getAttribute("staffid").equals(null)) && (session.getAttribute("type").equals(null))) {
 			return false;
 		}
 		else

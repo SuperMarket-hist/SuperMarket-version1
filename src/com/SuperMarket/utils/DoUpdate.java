@@ -23,7 +23,7 @@ public class DoUpdate {
 	 * @param UserScore
 	 * @return boolean
 	 */
-	public boolean DoUpdateVipCount(String UserId,int UserScore) {
+	public static boolean DoUpdateVipCount(String UserId,int UserScore) {
 		int ResultInt = 0;
 		
 		String sqlUpdate = "update vip_cus set UserScore=? where UserId =?";
@@ -56,7 +56,7 @@ public class DoUpdate {
 	 * @param vlaue
 	 * @return
 	 */
-	public boolean DoUpdateWallet(String element,String vlaue) {
+	public static boolean DoUpdateWallet(String element,String vlaue) {
 		
 		boolean flag = false;
 		String sqlUpdate = "update wallet set "+element+"="+vlaue+"";
@@ -80,7 +80,7 @@ public class DoUpdate {
 	 * @return int
 	 * @throws SQLException 
 	 */
-	public int DoUpdateStaffInfo(staff staff) throws SQLException {
+	public static int DoUpdateStaffInfo(staff staff) throws SQLException {
 		
 		Boolean checkstaffAvailable = DoSelect.DoSelectStaff(staff);//检查要修改的用户是否存在
 		if(checkstaffAvailable == true) {
@@ -117,7 +117,7 @@ public class DoUpdate {
 	 * @return boolean
 	 * @throws SQLException
 	 */
-	public boolean DoUpdatePassword(String staffid,String NewPassword) throws SQLException {
+	public static boolean DoUpdatePassword(String staffid,String NewPassword) throws SQLException {
 		
 		String UpdateStaffInfoSQL = "UPDATE staff set password=? WHERE staffid=?";
 			
@@ -145,7 +145,7 @@ public class DoUpdate {
 	 * @return boolean
 	 * @throws SQLException 
 	 */
-	public boolean DoSaleUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
+	public static boolean DoSaleUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
 		
 		boolean Updateflag = false;
 		
@@ -174,7 +174,7 @@ public class DoUpdate {
 	 * @return
 	 * @throws SQLException
 	 */
-	public boolean DoReturnUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
+	public static boolean DoReturnUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
 
 		boolean Updateflag = false;
 		
