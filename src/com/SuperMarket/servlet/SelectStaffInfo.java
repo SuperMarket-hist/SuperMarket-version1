@@ -10,55 +10,58 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.SuperMarket.bean.staff;
 import com.SuperMarket.utils.DoSelect;
 
+import net.sf.json.JSONArray;
+
 /**
- * Servlet implementation class checkIdAvailable
+ * Servlet implementation class SelectStaffInfo
+ * 根据工号查询指定员工信息
  */
-@WebServlet("/checkIdAvailable")
-public class checkIdAvailable extends HttpServlet {
+@WebServlet("/SelectStaffInfo")
+public class SelectStaffInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public checkIdAvailable() {
+    public SelectStaffInfo() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 *
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * @return 返回一个Boolean类型的结果，false为用户id不存在，true为存在
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
+		request.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		String staffid = request.getParameter("staffId");//获取Ajax传来的待检测的员工Id
-		
-		boolean checkResult = false;
+		String staffid = request.getParameter("staffid");
+		staff SelectStaff = new staff();
 		
 		try {
-			checkResult = DoSelect.DoSelectStaffid(staffid);//检查是否具有重复ID
-			pw.print(checkResult);//送回检测结果
+			SelectStaff = DoSelect.DoSelectStaff(staffid);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		JSONArray returnArray = JSONArray.fromObject(SelectStaff);
+		String ReturnStr = returnArray.toString();
+		
+		pw.print(ReturnStr);
 	}
 
 }

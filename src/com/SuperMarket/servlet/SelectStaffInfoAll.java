@@ -17,17 +17,17 @@ import com.SuperMarket.utils.DoSelect;
 import net.sf.json.JSONArray;
 
 /**
- * Servlet implementation class StaffIfo
- * 查询全部員工信息查詢
+ * Servlet implementation class SelectStaffInfoAll
+ * 查询全部员工信息
  */
-@WebServlet("/StaffIfo")
-public class StaffIfo extends HttpServlet {
+@WebServlet("/SelectStaffInfoAll")
+public class SelectStaffInfoAll extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public StaffIfo() {
+    public SelectStaffInfoAll() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -47,7 +47,6 @@ public class StaffIfo extends HttpServlet {
 			list = DoSelect.DoSelectStaff();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			System.out.println("查询员工信息失败");
 			e.printStackTrace();
 		}
 		JSONArray ja = JSONArray.fromObject(list);//json本来就是一个字符串，只不过是有格式的字符串,因此需要转换成字符串

@@ -82,7 +82,7 @@ public class DoUpdate {
 	 */
 	public static int DoUpdateStaffInfo(staff staff) throws SQLException {
 		
-		Boolean checkstaffAvailable = DoSelect.DoSelectStaff(staff);//检查要修改的用户是否存在
+		Boolean checkstaffAvailable = DoSelect.DoSelectStaffid(staff.getStaffid());//检查要修改的用户是否存在
 		if(checkstaffAvailable == true) {
 			//用户存在，执行修改
 			String UpdateStaffInfoSQL = "UPDATE staff set staffname=?,password=?,type=?,salary=?,dataflag=?,createtime=? WHERE staffid=?";
@@ -131,6 +131,36 @@ public class DoUpdate {
 			return true;
 		else
 			return false;
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: DoUpdateStaffQuit
+	 * @Description: 执行员工离职后的帐号禁用事务
+	 * @author JamsF
+	 * @date 2020年5月19日下午4:28:32
+	 * @param staffid
+	 * @return int
+	 * @throws SQLException
+	 */
+	public static int DoUpdateStaffQuit(String staffid) throws SQLException {
+		boolean checkIDAvailable = DoSelect.DoSelectStaffid(staffid);//检查员工是否存在
+		if(checkIDAvailable == true) {
+			String UpdateStaffDataflagSQL = "UPDATE staff set dataflag=0 WHERE staffid=?";
+			
+			PreparedStatement psta = JDBCTool.executePreparedStatement(UpdateStaffDataflagSQL);
+			psta.setString(1, staffid);
+			
+			int UpdateResult = psta.executeUpdate();
+			
+			if(UpdateResult == 1)
+				return 1;//成功
+			else
+				return 0;//失败
+		}
+		else
+			return -1;//员工不存在
 	}
 	
 	

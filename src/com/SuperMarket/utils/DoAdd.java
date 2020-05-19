@@ -119,7 +119,7 @@ public class DoAdd {
 		 * 2、添加失败
 		 * 3、发现重复用户名
 		 */		
-		boolean finduser = DoSelect.DoSelectStaff(userstaff);
+		boolean finduser = DoSelect.DoSelectStaffid(userstaff.getStaffid());
 		if(finduser == true) {
 			//发现重复用户名，拒绝添加
 			return 3;

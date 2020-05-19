@@ -29,7 +29,7 @@ public class DoSelect {
 	 * @return boolean
 	 * @throws SQLException
 	 */
-	public static boolean DoSelectStaff(staff userstaff) throws SQLException {
+	public static boolean DoSelectStaffid(String staffid) throws SQLException {
 		/*
 		 * 当存在用户时，设置flag为true；相反则设置为false
 		 */
@@ -37,7 +37,7 @@ public class DoSelect {
 		String selectStaff = "select * from staff where staffid=?";//查询该用户名的信息
 		
 		PreparedStatement psta = JDBCTool.executePreparedStatement(selectStaff);
-		psta.setString(1, userstaff.getStaffid());
+		psta.setString(1, staffid);
 		
 		ResultSet rs = psta.executeQuery();
 		boolean flag = false;

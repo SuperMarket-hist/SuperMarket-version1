@@ -15,6 +15,7 @@ import com.SuperMarket.utils.MD5Demo;
 
 /**
  * Servlet implementation class StaffRegister
+ * 员工入职
  */
 @WebServlet("/StaffRegister")
 public class StaffRegister extends HttpServlet {

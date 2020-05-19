@@ -10,55 +10,53 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.SuperMarket.utils.DoSelect;
+import com.SuperMarket.utils.DoUpdate;
 
 /**
- * Servlet implementation class checkIdAvailable
+ * Servlet implementation class StaffQuit
+ * 员工离职
  */
-@WebServlet("/checkIdAvailable")
-public class checkIdAvailable extends HttpServlet {
+@WebServlet("/StaffQuit")
+public class StaffQuit extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public checkIdAvailable() {
+    public StaffQuit() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 *
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * @return 返回一个Boolean类型的结果，false为用户id不存在，true为存在
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
-		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html;charset=utf-8");
+		request.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		String staffid = request.getParameter("staffId");//获取Ajax传来的待检测的员工Id
+		String staffid = request.getParameter("staffid");
 		
-		boolean checkResult = false;
+		int UpdateResult = -2;
 		
 		try {
-			checkResult = DoSelect.DoSelectStaffid(staffid);//检查是否具有重复ID
-			pw.print(checkResult);//送回检测结果
+			UpdateResult = DoUpdate.DoUpdateStaffQuit(staffid);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		pw.print(UpdateResult);
 	}
 
 }
