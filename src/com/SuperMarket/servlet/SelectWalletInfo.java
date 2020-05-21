@@ -1,8 +1,7 @@
 package com.SuperMarket.servlet;
 
 import java.io.IOException;
-
-
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,19 +12,20 @@ import javax.servlet.http.HttpServletResponse;
 import com.SuperMarket.bean.wallet;
 import com.SuperMarket.utils.DoSelect;
 
+import net.sf.json.JSONArray;
 
 /**
- * Servlet implementation class WalletInfo
- * 实现查询钱包servlet
+ * Servlet implementation class SelectWalletInfo
+ * *@Description: 执行查询总账信息的方法
  */
-@WebServlet("/WalletInfo")
-public class WalletInfo extends HttpServlet {
+@WebServlet("/SelectWalletInfo")
+public class SelectWalletInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WalletInfo() {
+    public SelectWalletInfo() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,12 +39,13 @@ public class WalletInfo extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		PrintWriter pw = response.getWriter();
 		
-		
-		//List<wallet> list = new ArrayList<wallet>();
-		wallet wt = DoSelect.DoSelectWallet();
-		request.setAttribute("wallet", wt);
-		request.getRequestDispatcher("walletInfo.html");
+		wallet wt = new wallet();
+		System.out.println("查询总账信息");
+		wt = DoSelect.DoSelectWallet();
+		JSONArray ja = JSONArray.fromObject(wt);
+		pw.print(ja.toString());
 	}
 
 	/**

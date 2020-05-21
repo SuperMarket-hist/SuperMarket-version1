@@ -1,8 +1,8 @@
 package com.SuperMarket.servlet;
 
 import java.io.IOException;
-
-
+import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,22 +10,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.SuperMarket.bean.wallet;
-import com.SuperMarket.utils.DoSelect;
-
+import com.SuperMarket.bean.orders;
+import com.SuperMarket.utils.DoAdd;
 
 /**
- * Servlet implementation class WalletInfo
- * 实现查询钱包servlet
+ * Servlet implementation class AddOrders
  */
-@WebServlet("/WalletInfo")
-public class WalletInfo extends HttpServlet {
+@WebServlet("/AddOrders")
+public class AddOrders extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WalletInfo() {
+    public AddOrders() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,14 +35,25 @@ public class WalletInfo extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("utf-8");
+		
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		PrintWriter pw = response.getWriter();
 		
-		
-		//List<wallet> list = new ArrayList<wallet>();
-		wallet wt = DoSelect.DoSelectWallet();
-		request.setAttribute("wallet", wt);
-		request.getRequestDispatcher("walletInfo.html");
+		orders os = new orders();
+		os.setOrderNo(request.getParameter("OrderNo"));
+		os.setGoodsID(request.getParameter("GoodsId"));
+		os.setUserId(request.getParameter("UserId"));
+		os.setGoodsNum(Double.parseDouble(request.getParameter("GoodsNum")));
+		os.setStaffid(request.getParameter("staffid"));
+		int result = 0;
+		try {
+			result = new DoAdd().DoAddOrders(os);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pw.print(result);
 	}
 
 	/**

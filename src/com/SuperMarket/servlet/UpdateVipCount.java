@@ -1,8 +1,7 @@
 package com.SuperMarket.servlet;
 
 import java.io.IOException;
-
-
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,22 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.SuperMarket.bean.wallet;
-import com.SuperMarket.utils.DoSelect;
+import com.SuperMarket.utils.DoUpdate;
 
+import net.sf.json.JSONArray;
 
 /**
- * Servlet implementation class WalletInfo
- * 实现查询钱包servlet
+ * Servlet implementation class UpdateVipCount
+ * 更新会员积分
  */
-@WebServlet("/WalletInfo")
-public class WalletInfo extends HttpServlet {
+@WebServlet("/UpdateVipCount")
+public class UpdateVipCount extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WalletInfo() {
+    public UpdateVipCount() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,15 +35,19 @@ public class WalletInfo extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html;charset=utf-8");
+		PrintWriter pw = response.getWriter();
 		
-		
-		//List<wallet> list = new ArrayList<wallet>();
-		wallet wt = DoSelect.DoSelectWallet();
-		request.setAttribute("wallet", wt);
-		request.getRequestDispatcher("walletInfo.html");
+		System.out.println("更新会员积分");
+		String ud = request.getParameter("UserScore");
+		int us = Integer.parseInt(ud);
+		System.out.println(us);
+		boolean flag = DoUpdate.DoUpdateVipCount(request.getParameter("UserId"),us);
+		JSONArray ja = JSONArray.fromObject(flag);
+		pw.print(ja.toString());
 	}
 
 	/**
