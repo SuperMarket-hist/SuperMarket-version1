@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.SuperMarket.bean.staff;
+import com.SuperMarket.bean.wallet;
 import com.database.pool.JDBCTool;
 
 /**
@@ -12,6 +13,10 @@ import com.database.pool.JDBCTool;
 * @version 创建时间：2020年5月13日 上午8:47:05
 */
 public class DoUpdate {
+	public static String Lockvip_cus = "LOCK TABLES vip_cus WRITE";//为表加排他锁，防止出现读脏数据等错误
+	public static String Lockwallet = "LOCK TABLES wallet WRITE";
+	public static String Lockwst_goods = "LOCK TABLES wst_goods WRITE";
+	public static String UnLockTables = "UNLOCK TABLES ";//解锁表
 	
 	/**
 	 * 
@@ -22,14 +27,22 @@ public class DoUpdate {
 	 * @param UserId
 	 * @param UserScore
 	 * @return boolean
+	 * @throws SQLException 
 	 */
-	public static boolean DoUpdateVipCount(String UserId,int UserScore) {
+	public static boolean DoUpdateVipCount(String UserId,int UserScore) throws SQLException {
 		int ResultInt = 0;
 		
 		String sqlUpdate = "update vip_cus set UserScore=? where UserId =?";
 		
-		PreparedStatement psta = JDBCTool.executePreparedStatement(sqlUpdate);
-
+		PreparedStatement psta = JDBCTool.executePreparedStatement(Lockvip_cus);//加锁
+		
+		int Score = DoSelect.DoSelectVIPScore(UserId);
+		Score += UserScore;
+		
+		psta = JDBCTool.executePreparedStatement(sqlUpdate);
+		psta.setInt(1, Score);
+		psta.setString(2, UserId);
+		
 		boolean flag = false;
 		try {
 			ResultInt = psta.executeUpdate();
@@ -42,6 +55,7 @@ public class DoUpdate {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		psta = JDBCTool.executePreparedStatement(UnLockTables);//解锁
 		return flag;
 		
 	}
@@ -49,24 +63,35 @@ public class DoUpdate {
 	/**
 	 * 
 	 * @Title: updateWallet
-	 * @Description: 按需求修改总账数据
+	 * @Description: 退货业务实现修改总账信息
 	 * @author 灵风
 	 * @date 2020年5月13日上午8:52:33
 	 * @param element
 	 * @param vlaue
-	 * @return
+	 * @return boolean
+	 * @throws SQLException 
 	 */
-	public static boolean DoUpdateWallet(String element,String vlaue) {
+	public static boolean DoUpdateWallet(Double Returnmoney) throws SQLException {
 		
 		boolean flag = false;
-		String sqlUpdate = "update wallet set "+element+"="+vlaue+"";
+		String sqlUpdate = "update wallet set income=? where id = 1";
 		
-		int result = 0;
-		result = JDBCTool.executeUpdate(sqlUpdate);
-		if(result > 0) {
-			System.out.println("修改成功");
+		PreparedStatement psta = JDBCTool.executePreparedStatement(Lockwallet);
+		
+		wallet Wallet = new wallet();
+		Wallet = DoSelect.DoSelectWallet();
+		
+		Double Income = Wallet.getIncome();
+		Income += Returnmoney;
+		
+		psta = JDBCTool.executePreparedStatement(sqlUpdate);
+		psta.setDouble(1, Income);
+		
+		int result = psta.executeUpdate();
+		if(result > 0) 
 			flag = true;
-		}
+		
+		JDBCTool.executePreparedStatement(UnLockTables);
 		
 		return flag;
 	}
@@ -210,16 +235,49 @@ public class DoUpdate {
 		
 		String SaleUpdateGoodsSQL ="UPDATE wst_goods SET GoodsStock = ? WHERE GoodsId = ?";
 		
-		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SaleUpdateGoodsSQL);
+		PreparedStatement psta = JDBCTool.executePreparedStatement(Lockwst_goods);
+		
+		GoodsNumber += DoSelect.DoSelectGoodsNum(GoodsId);
+		
+		psta = JDBCTool.getConn().prepareStatement(SaleUpdateGoodsSQL);
 		psta.setDouble(1, GoodsNumber);
 		psta.setString(2, GoodsId);
 		
 		int UpdateResult = psta.executeUpdate();
 		
+		psta = JDBCTool.executePreparedStatement(UnLockTables);
+		
 		if(UpdateResult == 1)
 			Updateflag = true;
 		
 		return Updateflag;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoReturnDelectOrders
+	 * @Description: 执行退货业务的删除订单事务
+	 * @author JamsF
+	 * @date 2020年5月26日下午5:26:22
+	 * @param OrderNo
+	 * @param GoodsId
+	 * @return boolean
+	 * @throws SQLException
+	 */
+	public static boolean DoReturnDelectOrders(String OrderNo,String GoodsId) throws SQLException {
+		int result= 0;
+		String DropOrders = "DELETE FROM orders WHERE OrderNo = ? AND GoodsId = ?";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(DropOrders);
+		psta.setString(1, OrderNo);
+		psta.setString(2, GoodsId);
+		
+		result = psta.executeUpdate();
+		
+		if(result == 1)
+			return true;
+		else
+			return false;
 	}
 
 }
