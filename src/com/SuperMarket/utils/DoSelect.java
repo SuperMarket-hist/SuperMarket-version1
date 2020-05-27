@@ -220,22 +220,21 @@ public class DoSelect {
 	 * @Description: 为仓库管理员提供查询指定商品信息的方法
 	 * @author JamsF
 	 * @date 2020年5月13日下午3:23:10
-	 * @return ArrayList<store_goods>
+	 * @return store_goods
 	 * @throws SQLException
 	 */
-	public static ArrayList<store_goods> DoSelectGoodsInfo(String GoodsId) throws SQLException {
-		
-		ArrayList<store_goods> list = new ArrayList<store_goods>();
-		
+	public static store_goods DoSelectGoodsInfo(String GoodsId) throws SQLException {
+				
 		String SelectGoodsSQL = "SELECT pro_goods.`GoodsId`,GoodsName,Specs,Unit,MarketPrice,SaPrice,Discount,CTime,STime,Category,Factory,wst_goods.GoodsStock,wst_goods.`WarnStock` FROM pro_goods,wst_goods WHERE pro_goods.`GoodsId` = wst_goods.`GoodsId` AND wst_goods.`GoodsId`=?";
 		
 		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectGoodsSQL);
 		psta.setString(1, GoodsId);
 		
 		ResultSet rs = psta.executeQuery();
+
+		store_goods Goods = new store_goods();
 		
 		while(rs.next()) {
-			store_goods Goods = new store_goods();
 			Goods.setGoodsID(rs.getString(1));
 			Goods.setGoodsName(rs.getString(2));
 			Goods.setSpecs(rs.getString(3));
@@ -249,9 +248,33 @@ public class DoSelect {
 			Goods.setFactory(rs.getString(11));	
 			Goods.setGoodsStock(rs.getInt(12));
 			Goods.setWarnStock(rs.getInt(13));
-			list.add(Goods);
 		}
-		return list;
+		return Goods;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoSelectGoodsNum
+	 * @Description: 查询指定商品库存数量
+	 * @author JamsF
+	 * @date 2020年5月26日下午7:36:03
+	 * @param GoodsId
+	 * @return int
+	 * @throws SQLException
+	 */
+	public static double DoSelectGoodsNum(String GoodsId) throws SQLException {
+		int result = -1;
+		String SelectGoods = "SELECT GoodsStock from wst_goods WHERE GoodsId = ?";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(SelectGoods);
+		psta.setString(1, GoodsId);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		if(rs.next())
+			result = rs.getInt(1);
+		
+		return result;
 	}
 	
 	
@@ -414,6 +437,31 @@ public class DoSelect {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoSelectVIPScore
+	 * @Description: 执行查询指定会员积分事务
+	 * @author JamsF
+	 * @date 2020年5月26日下午7:13:49
+	 * @param UserId
+	 * @return int
+	 * @throws SQLException
+	 */
+	public static int DoSelectVIPScore(String UserId) throws SQLException {
+		int result = -1;
+		String SelectVIPScore = "SELECT UserScore from vip_cus where UserId = ?";
+		
+		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectVIPScore);
+		psta.setString(1, UserId);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		if(rs.next())
+			result = rs.getInt(1);
+		
+		return result;
 	}
 	
 }
