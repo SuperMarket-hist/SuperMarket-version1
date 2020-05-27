@@ -2,6 +2,7 @@ package com.SuperMarket.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.SuperMarket.utils.DoUpdate;
-
-import net.sf.json.JSONArray;
 
 /**
  * Servlet implementation class UpdateVipCount
@@ -45,9 +44,14 @@ public class UpdateVipCount extends HttpServlet {
 		String ud = request.getParameter("UserScore");
 		int us = Integer.parseInt(ud);
 		System.out.println(us);
-		boolean flag = DoUpdate.DoUpdateVipCount(request.getParameter("UserId"),us);
-		JSONArray ja = JSONArray.fromObject(flag);
-		pw.print(ja.toString());
+		boolean flag = false;
+		try {
+			flag = DoUpdate.DoUpdateVipCount(request.getParameter("UserId"),us);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pw.print(flag);
 	}
 
 	/**
