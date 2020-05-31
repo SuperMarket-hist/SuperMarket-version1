@@ -3,6 +3,7 @@ package com.SuperMarket.utils;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.SuperMarket.bean.orders;
 import com.SuperMarket.bean.staff;
 import com.SuperMarket.bean.wallet;
 import com.database.pool.JDBCTool;
@@ -206,11 +207,17 @@ public class DoUpdate {
 		
 		String SaleUpdateGoodsSQL ="UPDATE wst_goods SET GoodsStock = ? WHERE GoodsId = ?";
 		
-		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SaleUpdateGoodsSQL);
+		PreparedStatement psta = JDBCTool.executePreparedStatement(Lockwst_goods);
+		
+		GoodsNumber = DoSelect.DoSelectGoodsNum(GoodsId) - GoodsNumber;
+		
+		psta = JDBCTool.getConn().prepareStatement(SaleUpdateGoodsSQL);
 		psta.setDouble(1, GoodsNumber);
 		psta.setString(2, GoodsId);
 		
 		int UpdateResult = psta.executeUpdate();
+		
+		psta = JDBCTool.executePreparedStatement(UnLockTables);
 		
 		if(UpdateResult == 1)
 			Updateflag = true;
@@ -226,7 +233,7 @@ public class DoUpdate {
 	 * @date 2020年5月14日下午3:08:23
 	 * @param GoodsId
 	 * @param GoodsNumber
-	 * @return
+	 * @return boolean
 	 * @throws SQLException
 	 */
 	public static boolean DoReturnUpdateGoods(String GoodsId,double GoodsNumber) throws SQLException {
@@ -271,6 +278,36 @@ public class DoUpdate {
 		PreparedStatement psta = JDBCTool.executePreparedStatement(DropOrders);
 		psta.setString(1, OrderNo);
 		psta.setString(2, GoodsId);
+		
+		result = psta.executeUpdate();
+		
+		if(result == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: DoSaleCreatOrders
+	 * @Description: 为收银处提供添加订单的方法
+	 * @author JamsF
+	 * @date 2020年5月31日下午5:59:06
+	 * @param orders
+	 * @return boolean
+	 * @throws SQLException
+	 */
+	public static boolean DoSaleCreatOrders(orders orders) throws SQLException {
+		int result = 0;
+		String CreatOrders = "INSERT INTO orders VALUES(?,?,?,?,?)";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(CreatOrders);
+		psta.setString(1, orders.getOrderNo());
+		psta.setString(2, orders.getGoodsID());
+		psta.setString(3, orders.getUserId());
+		psta.setDouble(4, orders.getGoodsNum());
+		psta.setString(5, orders.getStaffid());
 		
 		result = psta.executeUpdate();
 		
