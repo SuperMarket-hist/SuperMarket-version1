@@ -59,18 +59,17 @@ public class ReturnOrder extends HttpServlet {
         while ((line = br.readLine()) != null) {
             sb.append(line);
         }
+		String jsonstr = sb.toString();//拿到json字符串
 		
-		JSONArray json = JSONArray.fromObject(sb.toString());//将json字符串转化为json数组
-		System.out.println(json);
+		String OrderId = JSONObject.fromObject(jsonstr).getString("OrderNo");//得到订单编号
+		String UserId = JSONObject.fromObject(jsonstr).getString("UserId");//得到会员账号
+		JSONArray json = JSONObject.fromObject(jsonstr).getJSONArray("Order");//得到商品数组
 		double walletsale = 0;//退货商品总额
-		String userId = "";//退货会员账号
 		boolean result = false;//保存执行结果
 		
 		for(int i = 0;i < json.size();i++) {//遍历json数组
 			JSONObject jsonObj = json.getJSONObject(i);
 			String GoodsId = jsonObj.getString("GoodsId");//得到商品编号
-			String OrderId = jsonObj.getString("OrderNo");//得到订单编号
-			userId = jsonObj.getString("UserId");//得到会员账号
 			double GoodsNum = jsonObj.getDouble("GoodsNum");//得到商品数量
 			store_goods goods = new store_goods();
 			try {
@@ -97,7 +96,7 @@ public class ReturnOrder extends HttpServlet {
 		}
 		//更新积分
 		try {
-			result =DoUpdate.DoUpdateVipCount(userId, (int)(0 - walletsale));
+			result =DoUpdate.DoUpdateVipCount(UserId, (int)(0 - walletsale));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
