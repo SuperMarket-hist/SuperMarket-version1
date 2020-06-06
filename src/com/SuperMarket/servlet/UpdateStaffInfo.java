@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.SuperMarket.bean.staff;
-import com.SuperMarket.utils.DoAdd;
+import com.SuperMarket.utils.DoUpdate;
 import com.SuperMarket.utils.MD5Demo;
 
 /**
@@ -55,7 +55,7 @@ public class UpdateStaffInfo extends HttpServlet {
 		
 		int insertResult = 2;
 		try {
-			insertResult = DoAdd.DoAddStaff(userstaff);
+			insertResult = DoUpdate.DoUpdateStaffInfo(userstaff);
 			pw.print(insertResult);//向Ajax传回注册结果  1:成功  2:失败
 			
 		} catch (SQLException e) {
