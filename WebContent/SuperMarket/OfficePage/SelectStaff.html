@@ -1,10 +1,173 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+	<head>
+		<meta charset="utf-8" />
+		<title>超市管理</title>
+		<link rel="stylesheet" href="../../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<script type="text/javascript" src="../../js/jquery-1.11.1/jquery.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+	</head>
+	<body>
+		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;top:50px;right: 10px;">
+		       <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		          <span aria-hidden="true">&times;</span>
+		       </button>
+		       <strong id="alerttext"> </strong>
+		</div>
+		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
+			<div class="col-lg-8"></div>
+			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span id="tit_time" style="margin-right: 20px;"></span>
+				<script type="text/javascript">
+					var interval=self.setInterval("gettime()",500)
+					function gettime() {
+						var time = new Date();
+						var timestr = time.toLocaleString();
+						var tit_time = document.getElementById("tit_time");
+						tit_time.innerText=timestr;
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="font-size: 20px;position: relative;top:50%;transform:translateY(-50%);">
+				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span> 旺财 
+			</div>
+			<div class="col-lg-1" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
+				<script type="text/javascript">
+					function checkout() {
+						document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+						document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+						window.location.href="Login.html";
+					}
+				</script>
+			</div>
+		</div>
+		<div class="col-lg-2" style="margin-top: 30px;text-align: center;">
+			<ul class="nav nav-pills nav-stacked">
+		  		<li role="presentation"><a href="TableManage.html">报表管理</a></li>
+		  		<li role="presentation" class="active"><a href="#">员工管理</a></li>
+		  		<li role="presentation"><a href="VipManage.html">VIP账户管理</a></li>
+		  		<li role="presentation"><a href="UndoSale.html">退货业务</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-10">
+			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
+				<ul class="nav nav-pills nav-stacked">
+				  <li role="presentation"><a href="RegistStaff.html">员工入职</a></li>
+				  <li role="presentation"><a href="UnemployStaff.html">员工离职</a></li>
+				  <li role="presentation" class="active"><a href="#">查询员工信息</a></li>
+				  <li role="presentation"><a href="UpdateStaff.html">修改员工信息</a></li>
+				  <li role="presentation"><a href="UpdateStaffPassword.html">员工密码重置</a></li>
+				</ul>
+			</div>
+			<div class="col-lg-5" style="padding-top: 50px;">
+						<div style="margin-left: 15px;">
+						
+						  <!-- Nav tabs -->
+						  <ul class="nav nav-tabs" role="tablist">
+						    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询员工</a></li>
+						    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" id="allGoods">显示所有员工</a></li>
+						  </ul>
+						
+						  <!-- Tab panes -->
+						  <div class="tab-content">
+						    <div role="tabpanel" class="tab-pane active" id="home">
+								<div class="col-lg-12" style="margin-top: 20px;">
+									<form>
+									<div class="col-lg-8" style="padding-left: 0;">
+										
+										<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="请输入工号或姓名称进行查询" />
+								
+									</div>
+									<div>
+										<input type="button" class="btn btn-primary" onclick="selectStaff()" value="点击查询"></input>
+									</div>
+									</form>
+								</div>
+								<div class="col-lg-12" id="table_sta" style="margin-top: 20px;display: none;">
+									<div class="table-responsive">
+									  <table class="table table-condensed" id="staffInfo">
+									
+									  </table>
+									</div>
+								</div>
+								
+							</div>
+						    <div role="tabpanel" class="tab-pane" id="profile">
+								<div class="col-lg-12" style="margin-top: 20px;">
+									<tbody id="allStaffInfo"></tbody>
+								</div>
+							</div>
+						</div>
+						</div>
+					</div>
+				</div>
+				
+		<!-- <script>
+			function selectStaff(){
+				var staffid = $('#stuffid').val();
+				$.post('SelectStaffInfo',{
+						"staffid":staffid
+					},function(data){
+						console.log(data);
+						var table = $('#stuffInfo');
+						for(var i=0;i<data.length;i++){
+							table.html("<tr>"+"<td>"+
+							data[i].staffid+"</td>"+"<td>"+
+							data[i].staffname+"</td>"+"<td>"+
+							data[i].type+"</td>"+"<td>"+
+							data[i].salary+"</td>"+"<td>"+
+							data[i].dataflag+"</td>"+"<td>"+
+							data[i].createtime+"</td>"+"</tr>");
+						}
+					},'json'
+				);	
+			}
+		 -->
+		
+		<script>
+			var xmlhttp;
+			function selectStaff(){
+				var staffid = document.getElementById("inputHelpBlock").value;
+				staffInfo.innerHTML = '<tr><th>编号</th><th>姓名</th><th>类别</th><th>工资</th><th>帐号状态</th><th>创建时间</th>';
+				if(staffid.length <= 0){
+					document.getElementById("alerttext").innerHTML="请输入要查询的工号";
+					$('.alert-danger').removeClass('hide').addClass('in');
+				}
+				else{
+					$('.alert-danger').removeClass('in').addClass('hide');
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././SelectStaffInfo",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("staffid="+staffid);
+					xmlhttp.onreadystatechange=getResult;
+				}
+			}
+			
+			function getResult(){
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						var arr = JSON.parse(rec);
+						var staffInfo = document.getElementById("staffInfo");
+						for(var i in arr){//遍历arr数组时，i为索引
+							var SelectStaff = eval(arr[i]);
+							var staffid = SelectStaff.staffid;
+							var staffname = SelectStaff.staffname;
+							var type = SelectStaff.type;
+							var salary = SelectStaff.salary;
+							var dataflag = SelectStaff.dataflag;
+							var createtime = SelectStaff.createtime;
+							staffInfo.innerHTML += '<tr><td>'+ staffid +'</td><td>'+ staffname +'</td><td>'+ type +'</td><td>'+ salary +'</td><td>'+ dataflag +'</td><td>'+ createtime +'</td></tr>';
+						}
+						document.getElementById("table_sta").style.display='';
+					}
+				}
+			}
+		</script>
+		
+				
+				
+	</body>
 </html>

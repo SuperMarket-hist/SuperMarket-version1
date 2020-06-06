@@ -3,8 +3,6 @@ package com.SuperMarket.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -14,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.SuperMarket.bean.pro_goods;
 import com.SuperMarket.utils.DoSelect;
 
-import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * Servlet implementation class SelectGoodsInfo
@@ -58,11 +56,8 @@ public class SelectGoodsInfo extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		ArrayList<pro_goods> list = new ArrayList<pro_goods>();
-		list.add(Goods);
-		
-		JSONArray listarray = JSONArray.fromObject(list);
-		String returnstr = listarray.toString();
+		JSONObject jsonobj = JSONObject.fromObject(Goods);
+		String returnstr = jsonobj.toString();
 		
 		pw.print(returnstr);
 	}
