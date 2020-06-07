@@ -64,7 +64,7 @@ public class DoCashier extends HttpServlet {
 		
 		String OrderId = JSONObject.fromObject(jsonstr).getString("OrderNo");//得到订单编号
 		String UserId = JSONObject.fromObject(jsonstr).getString("UserId");//得到会员账号
-		if(UserId == null)
+		if(UserId.equals(""))
 			UserId = "000";
 		String StaffId = JSONObject.fromObject(jsonstr).getString("StaffId");//得到收银员编号
 		JSONArray json = JSONObject.fromObject(jsonstr).getJSONArray("Order");//得到商品数组
