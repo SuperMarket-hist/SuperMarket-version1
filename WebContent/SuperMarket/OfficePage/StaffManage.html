@@ -58,49 +58,19 @@
 		  		<li role="presentation"><a href="TableManage.html">报表管理</a></li>
 		  		<li role="presentation" class="active"><a href="#">员工管理</a></li>
 		  		<li role="presentation"><a href="VipManage.html">VIP账户管理</a></li>
-		  		<li role="presentation"><a href="UndoSala.html">退货业务</a></li>
+		  		<li role="presentation"><a href="UndoSale.html">退货业务</a></li>
 			</ul>
 		</div>
 		<div class="col-lg-10">
 			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
 				<ul class="nav nav-pills nav-stacked">
 				  <li role="presentation"><a href="RegistStaff.html">员工入职</a></li>
-				  <li role="presentation" class="active"><a href="#">员工离职</a></li>
+				  <li role="presentation"><a href="UnemployStaff.html">员工离职</a></li>
 				  <li role="presentation"><a href="SelectStaff.html">查询员工信息</a></li>
 				  <li role="presentation"><a href="UpdateStaff.html">修改员工信息</a></li>
 				  <li role="presentation"><a href="UpdateStaffPassword.html">员工密码重置</a></li>
 				</ul>
 			</div>
-			<div class="col-lg-5">
-				<div class="page-header">
-				  <h1><small>更改员工状态</small></h1>
-				</div>
-				<form action="" method="post" class="form-horizontal text-left" name="Regist_form">
-					<table style="width:100%; font-size: 15px;">
-						<tr>
-							<td><input type="text" class="form-control" name="staffid" id="delInfo" placeholder="请输入工号" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-					</table>
-				<div style="margin-left: 100px;margin-right: 100px;margin-top: 15px;margin-bottom: 30px;">
-					<input type="button" id="submit_btn" class="btn btn-primary btn-lg btn-block" onclick="delStaff()" value="确认">
-				</div>
-				</form>
-			</div>
 		</div>
-		
-		<script>
-			function delStaff(){
-				var staffid = $('#delInfo').val();
-				$.post('../.././StaffQuit',{
-						staffid:staffid
-					},function(data){
-						alert("删除成功!");
-					},'json'
-				);
-			}
-		</script>
-		
 	</body>
 </html>
