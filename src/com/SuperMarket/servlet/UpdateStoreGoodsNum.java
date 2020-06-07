@@ -13,6 +13,7 @@ import com.SuperMarket.utils.DoUpdate;
 
 /**
  * Servlet implementation class UpdateStoreGoodsNum
+ *  商品入库
  */
 @WebServlet("/UpdateStoreGoodsNum")
 public class UpdateStoreGoodsNum extends HttpServlet {
