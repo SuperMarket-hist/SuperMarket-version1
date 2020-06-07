@@ -64,12 +64,16 @@ public class Login extends HttpServlet {
 			
 			if(flag == 1) {
 				//密码正确，允许登录
+				staff SelectStaff = new staff();
+				SelectStaff = DoSelect.DoSelectStaff(STAFFID);
 				HttpSession session = request.getSession();
-				session.setAttribute("staffid", STAFFID);
-				session.setAttribute("type", DoSelect.DoSelectStaffType(STAFFID));//在session中存放当前员工类型，为filter做准备
+				session.setAttribute("staffid", SelectStaff.getStaffid());
+				session.setAttribute("type", SelectStaff.getType());//在session中存放当前员工类型，为filter做准备
 				
 				Cookie inputStaffid = new Cookie("inputStaffid",STAFFID);
+				Cookie inputStaffName = new Cookie("inputStaffName", SelectStaff.getStaffname());
 				response.addCookie(inputStaffid);
+				response.addCookie(inputStaffName);
 				pw.print(flag);
 			}
 			else if(flag == 2){
