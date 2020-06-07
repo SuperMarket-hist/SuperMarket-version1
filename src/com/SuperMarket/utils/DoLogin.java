@@ -55,6 +55,7 @@ public class DoLogin {
 			else 
 				loginflag = 2;
 		}
+		JDBCTool.close();
 		return loginflag;
 	}
 

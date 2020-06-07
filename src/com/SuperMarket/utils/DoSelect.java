@@ -34,7 +34,7 @@ public class DoSelect {
 		 * 当存在用户时，设置flag为true；相反则设置为false
 		 */
 		
-		String selectStaff = "select * from staff where staffid=?";//查询该用户名的信息
+		String selectStaff = "select staffid from staff where staffid=?";//查询该用户名的信息
 		
 		PreparedStatement psta = JDBCTool.executePreparedStatement(selectStaff);
 		psta.setString(1, staffid);
@@ -48,9 +48,8 @@ public class DoSelect {
 		else
 			//查询结果不为空，用户存在，修改flag为false
 			flag = true;
-		
+		JDBCTool.close();
 		return flag;
-		
 	}
 	
 	/**
@@ -82,7 +81,7 @@ public class DoSelect {
 			returnstaff.setDataflag(rs.getInt(6));
 			returnstaff.setCreatetime(rs.getString(7));
 		}
-		
+		JDBCTool.close();
 		return returnstaff;
 	}
 	
@@ -110,7 +109,7 @@ public class DoSelect {
 		while(rs.next()) {
 			StaffType = rs.getInt(1);
 		}
-		
+		JDBCTool.close();
 		return StaffType;
 	}
 	
@@ -143,7 +142,7 @@ public class DoSelect {
 			returnstaff.setCreatetime(rs.getString(7));
 			list.add(returnstaff);
 		}
-		
+		JDBCTool.close();
 		return list;
 	}
 	
@@ -210,7 +209,7 @@ public class DoSelect {
 			Goods.setCategory(rs.getString(10));
 			Goods.setFactory(rs.getString(11));			
 		}
-		
+		JDBCTool.close();
 		return Goods;
 	}
 	
@@ -249,6 +248,7 @@ public class DoSelect {
 			Goods.setGoodsStock(rs.getInt(12));
 			Goods.setWarnStock(rs.getInt(13));
 		}
+		JDBCTool.close();
 		return Goods;
 	}
 	
@@ -273,7 +273,7 @@ public class DoSelect {
 		
 		if(rs.next())
 			result = rs.getInt(1);
-		
+		JDBCTool.close();
 		return result;
 	}
 	
@@ -314,6 +314,7 @@ public class DoSelect {
 			Goods.setWarnStock(rs.getInt(13));
 			list.add(Goods);
 		}
+		JDBCTool.close();
 		return list;
 	}
 	
@@ -355,7 +356,7 @@ public class DoSelect {
 			Goods.setWarnStock(rs.getInt(13));
 			list.add(Goods);
 		}
-		
+		JDBCTool.close();
 		return list;
 		
 	}
@@ -399,11 +400,42 @@ public class DoSelect {
 			Goods.setWarnStock(rs.getInt(13));
 			list.add(Goods);
 		}
-		
+		JDBCTool.close();
 		return list;
 		
 	}
 	
+	/**
+	 * 
+	 * @Title: DoSelectGoodsIdAvailable
+	 * @Description: 查询货号是否合法
+	 * @author JamsF
+	 * @date 2020年6月7日下午6:42:59
+	 * @param GoodsId
+	 * @return 合法返回true，不合法返回false
+	 * @throws SQLException
+	 */
+	public static boolean DoSelectGoodsIdAvailable(String GoodsId) throws SQLException {
+		
+		boolean flag = false;
+		
+		String SelectSQL = "SELECT GoodsId from wst_goods WHERE GoodsId = ?";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(SelectSQL);
+		psta.setString(1, GoodsId);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		if(!rs.next()) {
+			//查询结果为空，用户不存在，修改flag为false
+			flag = false;
+		}
+		else
+			//查询结果不为空，用户存在，修改flag为false
+			flag = true;
+		JDBCTool.close();
+		return flag;
+	}
 	
 	/**
 	 * 
@@ -435,7 +467,7 @@ public class DoSelect {
 			Order.setStaffid(rs.getString(5));
 			list.add(Order);
 		}
-		
+		JDBCTool.close();
 		return list;
 	}
 	
@@ -460,7 +492,7 @@ public class DoSelect {
 		
 		if(rs.next())
 			result = rs.getInt(1);
-		
+		JDBCTool.close();
 		return result;
 	}
 	

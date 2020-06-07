@@ -57,6 +57,7 @@ public class DoUpdate {
 			e.printStackTrace();
 		}
 		psta = JDBCTool.executePreparedStatement(UnLockTables);//解锁
+		JDBCTool.close();
 		return flag;
 		
 	}
@@ -93,7 +94,7 @@ public class DoUpdate {
 			flag = true;
 		
 		JDBCTool.executePreparedStatement(UnLockTables);
-		
+		JDBCTool.close();
 		return flag;
 	}
 	
@@ -124,7 +125,7 @@ public class DoUpdate {
 			psta.setString(7, staff.getStaffid());
 			
 			int UpdateResult = psta.executeUpdate();
-			
+			JDBCTool.close();
 			return UpdateResult;			
 		}
 		else
@@ -152,7 +153,7 @@ public class DoUpdate {
 		psta.setString(2, staffid);
 		
 		int UpdateResult = psta.executeUpdate();
-			
+		JDBCTool.close();	
 		if(UpdateResult == 1)
 			return true;
 		else
@@ -179,7 +180,7 @@ public class DoUpdate {
 			psta.setString(1, staffid);
 			
 			int UpdateResult = psta.executeUpdate();
-			
+			JDBCTool.close();
 			if(UpdateResult == 1)
 				return 1;//成功
 			else
@@ -218,7 +219,7 @@ public class DoUpdate {
 		int UpdateResult = psta.executeUpdate();
 		
 		psta = JDBCTool.executePreparedStatement(UnLockTables);
-		
+		JDBCTool.close();
 		if(UpdateResult == 1)
 			Updateflag = true;
 		
@@ -253,7 +254,7 @@ public class DoUpdate {
 		int UpdateResult = psta.executeUpdate();
 		
 		psta = JDBCTool.executePreparedStatement(UnLockTables);
-		
+		JDBCTool.close();
 		if(UpdateResult == 1)
 			Updateflag = true;
 		
@@ -280,7 +281,7 @@ public class DoUpdate {
 		psta.setString(2, GoodsId);
 		
 		result = psta.executeUpdate();
-		
+		JDBCTool.close();
 		if(result == 1)
 			return true;
 		else
@@ -310,7 +311,7 @@ public class DoUpdate {
 		psta.setString(5, orders.getStaffid());
 		
 		result = psta.executeUpdate();
-		
+		JDBCTool.close();
 		if(result == 1)
 			return true;
 		else

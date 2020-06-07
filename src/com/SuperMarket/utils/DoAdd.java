@@ -39,7 +39,7 @@ public class DoAdd {
 		psta.setString(5, orers.getStaffid());
 		
 		int InsertResult = psta.executeUpdate();
-		
+		JDBCTool.close();
 		return InsertResult;
 	}
 	
@@ -72,7 +72,7 @@ public class DoAdd {
 		psta.setString(11, Goods.getFactory());
 		
 		int  InsertResult = psta.executeUpdate();
-		
+		JDBCTool.close();
 		return InsertResult;
 	}
 	
@@ -97,7 +97,7 @@ public class DoAdd {
 		psta.setInt(3, Vip.getUserScore());
 		
 		int  InsertResult = psta.executeUpdate();
-		
+		JDBCTool.close();
 		return InsertResult;
 	}
 	
@@ -141,7 +141,7 @@ public class DoAdd {
 			psta.setString(7, userstaff.getCreatetime());
 			
 			int rsInsert = psta.executeUpdate();//插入成功返回受影响的行数
-			
+			JDBCTool.close();
 			if(rsInsert == 1) {
 				return 1;
 			}
