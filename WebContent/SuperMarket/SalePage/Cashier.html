@@ -97,6 +97,7 @@
 								<th>保质期</th>
 								<th>数量</th>
 								<th>小计</th>
+								<th>操作</th>
 							</tr>	  	
 						</table>
 						<div style="margin-top: 40px;">
@@ -135,8 +136,6 @@
 					if (xmlhttp.readyState==4) {		
 						if(xmlhttp.status==200){
 							var rec=xmlhttp.responseText;
-							var str = JSON.parse(rec);
-							var GoodInfo = eval(str);
 							var GoodInfo = JSON.parse(rec);
 							var GoodsId = GoodInfo.goodsID;
 							if(GoodsId != ""){
@@ -146,7 +145,6 @@
 										GoodsList[i].GoodsNum += 1;
 										flag = 1;
 										var colNum = GoodsList[i].ColNum;
-										console.log(colNum);
 										var table = document.getElementById("GoodsTable");
 										console.log(table.rows[colNum].cells[4]);
 										var tablecell = table.rows[colNum].cells[4];
@@ -167,7 +165,6 @@
 										"ColNum":count//记录所在行
 									}
 									console.log(jsonObj);
-									count++;
 									GoodsList.push(jsonObj);
 									var GoodsName = GoodInfo.goodsName;
 									var GoodsPrice = GoodInfo.saPrice;
@@ -182,12 +179,13 @@
 									var GoodMoney = GoodsPrice * GoodsNum;
 									money = parseFloat(money) + parseFloat(GoodsPrice);
 									var GoodsTable = document.getElementById("GoodsTable");
-									GoodsTable.innerHTML += '<tr><td>' + GoodsId + '</td><td>' + GoodsName + '</td><td>' + GoodsPrice + '</td><td>' + UntilTime + '</td><td>' + GoodsNum + '</td><td>' + GoodMoney + '</td></tr>';
+									GoodsTable.innerHTML += '<tr><td>' + GoodsId + '</td><td>' + GoodsName + '</td><td>' + GoodsPrice + '</td><td>' + UntilTime + '</td><td>' + GoodsNum + '</td><td>' + GoodMoney + '</td><td><input type="button" id="' + count + '" class="btn btn-xs btn-danger" onclick="DeleteGoods(event)" value="删除" /></td></tr>';
 									var AllMoney = document.getElementById("money");
 									AllMoney.innerHTML = money;
 									var StaffId = document.getElementById("StaffId");
 									StaffId.innerHTML = getCookie("inputStaffid");
 									document.getElementById("table_order").style.display = '';
+									count++;
 								}
 							}
 						}
@@ -259,6 +257,12 @@
 				    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
 				  }
 				  return "";
+				}
+				
+				function DeleteGoods(event) {
+					event = event ? event : window.event;
+					var obj = event.srcElement ? event.srcElement : event.target;
+					var Number = obj.id;//得到待删除商品的所在行数
 				}
 				
 			</script>

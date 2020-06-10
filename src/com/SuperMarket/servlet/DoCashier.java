@@ -51,15 +51,6 @@ public class DoCashier extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		/*//获取json字符串不能使用request.getParameter()!!!
-		BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-		String line = null;
-        StringBuilder sb = new StringBuilder();
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
-        }
-		String jsonstr = sb.toString();//拿到json字符串
-		System.out.println(jsonstr);*/
 		String jsonstr = request.getParameter("JsonStr");
 		
 		String OrderId = JSONObject.fromObject(jsonstr).getString("OrderNo");//得到订单编号
