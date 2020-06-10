@@ -40,13 +40,12 @@ public class UpdateVipCount extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		System.out.println("更新会员积分");
 		String ud = request.getParameter("UserScore");
 		int us = Integer.parseInt(ud);
 		System.out.println(us);
 		boolean flag = false;
 		try {
-			flag = DoUpdate.DoUpdateVipCount(request.getParameter("UserId"),us);
+			flag = DoUpdate.DoUpdateVipCount(request.getParameter("UserId"),0 - us);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
