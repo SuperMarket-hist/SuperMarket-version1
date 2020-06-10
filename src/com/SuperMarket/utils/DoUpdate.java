@@ -160,6 +160,39 @@ public class DoUpdate {
 			return false;
 	}
 	
+	/**
+	 * 
+	 * @Title: DoResetPassword
+	 * @Description: 员工密码重置方法，将密码重置为员工编号
+	 * @author JamsF
+	 * @date 2020年6月8日下午5:13:16
+	 * @param staffid
+	 * @return int 成功返回1，失败返回0，员工不存在返回-1
+	 * @throws SQLException
+	 */
+	public static int DoResetPassword(String staffid) throws SQLException {
+		
+		Boolean checkstaffAvailable = DoSelect.DoSelectStaffid(staffid);//检查要修改的用户是否存在
+		if(checkstaffAvailable == true) {
+			//用户存在，执行修改
+			
+			String newPassword = MD5Demo.md5(staffid);//将员工编号加密作为原始密码
+			String UpdateStaffInfoSQL = "UPDATE staff set password=? WHERE staffid=?";
+			
+			PreparedStatement psta = JDBCTool.executePreparedStatement(UpdateStaffInfoSQL);
+			
+			psta.setString(1, newPassword);
+			psta.setString(2, staffid);
+			
+			int UpdateResult = psta.executeUpdate();
+			JDBCTool.close();
+			return UpdateResult;			
+		}
+		else
+			//用户不存在，返回标志
+			return -1;
+	}
+	
 	
 	/**
 	 * 
