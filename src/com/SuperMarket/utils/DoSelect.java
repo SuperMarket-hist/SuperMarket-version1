@@ -5,10 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.SuperMarket.bean.orders;
 import com.SuperMarket.bean.pro_goods;
+import com.SuperMarket.bean.return_orders;
 import com.SuperMarket.bean.staff;
 import com.SuperMarket.bean.store_goods;
+import com.SuperMarket.bean.vip_cus;
 import com.SuperMarket.bean.wallet;
 import com.database.pool.JDBCTool;
 
@@ -447,11 +448,11 @@ public class DoSelect {
 	 * @return ArrayList<orders>
 	 * @throws SQLException
 	 */
-	public static ArrayList<orders> DoSelectOrders(String OrderNo) throws SQLException {
+	public static ArrayList<return_orders> DoSelectOrders(String OrderNo) throws SQLException {
 		
-		ArrayList<orders> list = new ArrayList<orders>();
+		ArrayList<return_orders> list = new ArrayList<return_orders>();
 		
-		String SelectOrderSQL = "SELECT * FROM orders WHERE OrderNo = ?";
+		String SelectOrderSQL = "SELECT o.OrderNo,o.GoodsId,g.GoodsName,g.SaPrice,o.GoodsNum,(o.GoodsNum * g.SaPrice * g.Discount),s.staffname FROM orders o,pro_goods g,staff s WHERE o.staffid = s.staffid AND o.GoodsId = g.GoodsId AND o.OrderNo = ?";
 		
 		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectOrderSQL);
 		psta.setString(1, OrderNo);
@@ -459,13 +460,15 @@ public class DoSelect {
 		ResultSet rs = psta.executeQuery();
 		
 		while(rs.next()) {
-			orders Order = new orders();
-			Order.setOrderNo(OrderNo);
-			Order.setGoodsID(rs.getString(2));
-			Order.setUserId(rs.getString(3));
-			Order.setGoodsNum(rs.getDouble(4));
-			Order.setStaffid(rs.getString(5));
-			list.add(Order);
+			return_orders Orders = new return_orders();
+			Orders.setOrderNo(rs.getString(1));
+			Orders.setGoodsId(rs.getString(2));
+			Orders.setGoodsName(rs.getString(3));
+			Orders.setSaPrice(rs.getDouble(4));
+			Orders.setGoodsNum(rs.getDouble(5));
+			Orders.setGoodsMoney(rs.getDouble(6));
+			Orders.setStaffName(rs.getString(7));
+			list.add(Orders);
 		}
 		JDBCTool.close();
 		return list;
@@ -494,6 +497,38 @@ public class DoSelect {
 			result = rs.getInt(1);
 		JDBCTool.close();
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoSelectVIPCount
+	 * @Description: 执行查询会员信息的方法
+	 * @author JamsF
+	 * @date 2020年6月8日下午5:03:37
+	 * @param UserId
+	 * @return 查询的会员对象
+	 * @throws SQLException
+	 */
+	public static vip_cus DoSelectVIPCount(String UserId) throws SQLException {
+		
+		String SelectVIPCount = "SELECT * from vip_cus where UserId = ?";
+		
+		vip_cus VIPCount = new vip_cus();
+		
+		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectVIPCount);
+		psta.setString(1, UserId);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		while(rs.next()) {
+			VIPCount.setUserId(rs.getString(1));
+			VIPCount.setUserName(rs.getString(2));
+			VIPCount.setUserScore(rs.getInt(3));
+		}
+		
+		JDBCTool.close();
+		
+		return VIPCount;
 	}
 	
 }

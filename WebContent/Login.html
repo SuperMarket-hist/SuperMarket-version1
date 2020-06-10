@@ -16,15 +16,14 @@
 	   </div>
 		<div class="col-lg-4 col-md-4 col-sm-4"> </div>
 		<div class="col-lg-4 col-md-4 col-sm-4" style="margin-top: 150px;">
-			<div style="margin-bottom: 30px;">
+			<div style="margin-bottom: 50px;">
 					<h2 class="text-center">SuperMarket</h2>
-					<h2 class="text-center" style="margin-top: 10px;margin-bottom: 15px;"><small>xxxx超市欢迎您的登录</small></h2>
 			</div>
 			<form class="form-horizontal text-left" name="login_form" method="post" action="Login">
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">Username</label>
+			    <label class="col-sm-2 control-label">Staffid</label>
 			    <div class="col-sm-10">
-			      <input type="text" class="form-control" name="inputStaffid" id="inputStaffid" placeholder="Username" required="required">
+			      <input type="text" class="form-control" name="inputStaffid" id="inputStaffid" placeholder="Staffid" required="required">
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -33,15 +32,16 @@
 			      <input type="password" class="form-control" name="inputPassword" id="inputPassword" placeholder="Password" required="required">
 			    </div>
 			  </div>
+			  
+			  <div class="form-group text-center">
+			    <div class="col-sm-offset-2 col-sm-10" style="margin-top: 10px;">
+			      <input type="button" class="btn btn-primary btn-lg btn-block" onclick="checkLogin()" value="登 录">
+			    </div>
+			  </div>
 			  <div class="form-group" style="margin-top: 25px;margin-bottom: 20px;">
 			    <div class="col-sm-offset-2 col-sm-10">
-			      <div class="checkbox col-lg-6 text-left">
-			        <label>
-			          <input type="checkbox"> Remember me
-			        </label>
-			      </div>
-				  <div class="forgpass col-lg-6 text-right">
-					  <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#myModal">忘记密码</button>
+				  <div class="forgpass col-lg-12" style="padding: 0;">
+					  <button type="button" class="btn btn-lg btn-block btn-info" data-toggle="modal" data-target="#myModal">忘记密码</button>
 				  </div>
 				  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					    <div class="modal-dialog">
@@ -54,11 +54,6 @@
 					        </div><!-- /.modal-content -->
 					    </div><!-- /.modal -->
 					</div>
-			    </div>
-			  </div>
-			  <div class="form-group text-center">
-			    <div class="col-sm-offset-2 col-sm-10" style="margin-top: 10px;">
-			      <input type="button" class="btn btn-primary btn-lg btn-block" onclick="checkLogin()" value="Sign in">
 			    </div>
 			  </div>
 			</form>
