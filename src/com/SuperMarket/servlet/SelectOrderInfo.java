@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.SuperMarket.bean.orders;
+import com.SuperMarket.bean.return_orders;
 import com.SuperMarket.utils.DoSelect;
 
 import net.sf.json.JSONArray;
 
 /**
  * Servlet implementation class SelectOrderInfo
+ * (退货用)根据订单号查询订单信息
  */
 @WebServlet("/SelectOrderInfo")
 public class SelectOrderInfo extends HttpServlet {
@@ -41,7 +42,7 @@ public class SelectOrderInfo extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 * (退货用)根据订单号查询订单信息
+	 * 
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -50,8 +51,8 @@ public class SelectOrderInfo extends HttpServlet {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		String OrderNo = request.getParameter("orderno");
-		ArrayList<orders> list = new ArrayList<orders>();
+		String OrderNo = request.getParameter("OrderNo");
+		ArrayList<return_orders> list = new ArrayList<return_orders>();
 		try {
 			list = DoSelect.DoSelectOrders(OrderNo);
 		} catch (SQLException e) {
@@ -59,10 +60,14 @@ public class SelectOrderInfo extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		JSONArray returnArray = JSONArray.fromObject(list);
-		String ReturnStr = returnArray.toString();
-		
-		pw.print(ReturnStr);
+		if(list.isEmpty())
+			pw.print("");
+		else {
+			JSONArray returnArray = JSONArray.fromObject(list);
+			String ReturnStr = returnArray.toString();
+			
+			pw.print(ReturnStr);
+		}
 	}
 
 }
