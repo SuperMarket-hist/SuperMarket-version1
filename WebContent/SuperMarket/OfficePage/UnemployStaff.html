@@ -8,6 +8,18 @@
 		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 	</head>
 	<body>
+		<div class="alert alert-success alert-dismissable hide" role="alert" style="position: absolute;top:50px;right: 10px;">
+	       <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+	          <span aria-hidden="true">&times;</span>
+	       </button>
+	       <strong id="alertsuccess">离职成功</strong>
+		</div>
+		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;top:50px;right: 10px;">
+	       <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+	          <span aria-hidden="true">&times;</span>
+	       </button>
+	       <strong id="alertsuccess">离职失败</strong>
+		</div>
 		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
 			<div class="col-lg-8"></div>
 			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
@@ -53,52 +65,118 @@
 				</script>
 			</div>
 		</div>
-		<div class="col-lg-2" style="margin-top: 30px;text-align: center;">
+		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
 			<ul class="nav nav-pills nav-stacked">
-		  		<li role="presentation"><a href="TableManage.html">报表管理</a></li>
+		  		<li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
 		  		<li role="presentation" class="active"><a href="#">员工管理</a></li>
-		  		<li role="presentation"><a href="VipManage.html">VIP账户管理</a></li>
-		  		<li role="presentation"><a href="UndoSala.html">退货业务</a></li>
+		  		<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/VIPManageIndex.html">会员管理</a></li>
+		  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li>
+		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li>
 			</ul>
 		</div>
 		<div class="col-lg-10">
 			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
 				<ul class="nav nav-pills nav-stacked">
-				  <li role="presentation"><a href="RegistStaff.html">员工入职</a></li>
-				  <li role="presentation" class="active"><a href="#">员工离职</a></li>
 				  <li role="presentation"><a href="SelectStaff.html">查询员工信息</a></li>
 				  <li role="presentation"><a href="UpdateStaff.html">修改员工信息</a></li>
-				  <li role="presentation"><a href="UpdateStaffPassword.html">员工密码重置</a></li>
+				  <li role="presentation"><a href="ResetStaffPassword.html">员工密码重置</a></li>
+				  <li role="presentation"><a href="RegistStaff.html">员工入职</a></li>
+				  <li role="presentation" class="active"><a href="#">员工离职</a></li>
 				</ul>
 			</div>
 			<div class="col-lg-5">
 				<div class="page-header">
-				  <h1><small>更改员工状态</small></h1>
+				  <h1><small>员工离职</small></h1>
 				</div>
-				<form action="" method="post" class="form-horizontal text-left" name="Regist_form">
-					<table style="width:100%; font-size: 15px;">
+				<div>
+				<form method="post" action="Unemploy" name = "Unemploy_form">
+					<table>
 						<tr>
-							<td><input type="text" class="form-control" name="staffid" id="delInfo" placeholder="请输入工号" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
+							<td>
+								<input type="text" class="form-control" name="staffid" id="inputId" autocomplete="off" placeholder="请输入离职员工工号" required="required" onblur="loadCheck()" title="Checked"
+										data-container="body" data-toggle="popover" data-placement="bottom"
+										data-content="">
+							</td>
+							<td>
+								<input style="margin-left:20px; width: 100px;" type="button" id="submit_btn" class="btn btn-primary" onclick="delStaff()" value="确认" />
+							</td>
 						</tr>
 					</table>
-				<div style="margin-left: 100px;margin-right: 100px;margin-top: 15px;margin-bottom: 30px;">
-					<input type="button" id="submit_btn" class="btn btn-primary btn-lg btn-block" onclick="delStaff()" value="确认">
-				</div>
-				</form>
+					
+				  </form>
 			</div>
+		</div>
 		</div>
 		
 		<script>
+		var xmlhttp;
+		function loadCheck(){
+			var staffId = document.Unemploy_form.staffid.value;
+			if(staffId.length <= 0){
+				document.getElementById("submit_btn").className="btn btn-primary disabled"
+			}
+			else{
+				document.getElementById("submit_btn").className="btn btn-primary"
+				if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+				else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+				xmlhttp.open("POST","../.././checkIdAvailable",true);
+				xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				xmlhttp.send("staffId="+staffId);
+				xmlhttp.onreadystatechange=getResult;
+			}
+			
+		}
+		
+		function getResult(){
+			if (xmlhttp.readyState==4) {		
+				if(xmlhttp.status==200){
+					var rec=xmlhttp.responseText;
+					if(rec == "false"){
+						$("#inputId").attr("data-content", "该员工不存在");
+						$('#inputId').popover('show');
+						document.getElementById("submit_btn").className="btn btn-primary disabled"
+					}
+				}
+				else{
+					alert("连接失败");
+				}
+			}
+		}
 			function delStaff(){
-				var staffid = $('#delInfo').val();
-				$.post('../.././StaffQuit',{
-						staffid:staffid
-					},function(data){
-						alert("删除成功!");
-					},'json'
-				);
+				var staffId = document.Unemploy_form.staffid.value;
+				if(staffId.length <= 0){
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else{
+					document.getElementById("submit_btn").className="btn btn-primary"
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././StaffQuit",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("staffId="+staffId);
+					xmlhttp.onreadystatechange=getDelResult;
+				}
+				
+			}
+			
+			function getDelResult() {
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						if(rec == "true"){
+							$('.alert-success').removeClass('hide').addClass('in');
+						}
+						else{
+							$('.alert-danger').removeClass('hide').addClass('in');
+						}
+					}
+					else{
+						alert("连接失败");
+					}
+				}
 			}
 		</script>
 		
