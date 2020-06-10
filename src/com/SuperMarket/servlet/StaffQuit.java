@@ -45,18 +45,24 @@ public class StaffQuit extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		PrintWriter pw = response.getWriter();
 		
-		String staffid = request.getParameter("staffid");
+		String staffid = request.getParameter("staffId");
 		
 		int UpdateResult = -2;
 		
 		try {
 			UpdateResult = DoUpdate.DoUpdateStaffQuit(staffid);
+			System.out.println(UpdateResult);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		boolean flag = false;
+		if(UpdateResult == 1)
+			flag = true;
+		else
+			flag = false;
 		
-		pw.print(UpdateResult);
+		pw.print(flag);
 	}
 
 }

@@ -8,6 +8,7 @@
 		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 	</head>
 	<body>
+		
 		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
 			<div class="col-lg-8"></div>
 			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
@@ -40,7 +41,7 @@
 					  }
 					  return "";
 					}
-				</script> 
+				</script>
 			</div>
 			<div class="col-lg-1" style="position: relative;top:50%;transform:translateY(-50%);">
 				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
@@ -53,94 +54,206 @@
 				</script>
 			</div>
 		</div>
-		<div class="col-lg-2" style="margin-top: 30px;text-align: center;">
+		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
 			<ul class="nav nav-pills nav-stacked">
-		  		<li role="presentation"><a href="TableManage.html">报表管理</a></li>
+		  		<li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
 		  		<li role="presentation" class="active"><a href="#">员工管理</a></li>
-		  		<li role="presentation"><a href="VipManage.html">VIP账户管理</a></li>
-		  		<li role="presentation"><a href="UndoSale.html">退货业务</a></li>
+		  		<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/VIPManageIndex.html">会员管理</a></li>
+		  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li>
+		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li>
 			</ul>
 		</div>
 		<div class="col-lg-10">
 			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
 				<ul class="nav nav-pills nav-stacked">
-				  <li role="presentation" class="active"><a href="#">员工入职</a></li>
-				  <li role="presentation"><a href="UnemployStaff.html">员工离职</a></li>
 				  <li role="presentation"><a href="SelectStaff.html">查询员工信息</a></li>
 				  <li role="presentation"><a href="UpdateStaff.html">修改员工信息</a></li>
-				  <li role="presentation"><a href="UpdateStaffPassword.html">员工密码重置</a></li>
+				  <li role="presentation"><a href="ResetStaffPassword.html">员工密码重置</a></li>
+				  <li role="presentation" class="active"><a href="#">员工入职</a></li>
+				  <li role="presentation"><a href="UnemployStaff.html">员工离职</a></li>
 				</ul>
 			</div>
 			<div class="col-lg-5">
 				<div class="page-header">
 				  <h1><small>新员工信息录入</small></h1>
 				</div>
-				<form class="form-horizontal text-left" name="Regist_form">
-					<table style="width:100%; font-size: 15px;">
-						<tr>
-							<td><input type="text" class="form-control" name="staffid" id="notNull1" placeholder="请输入工号" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-						<tr>
-							<td><input type="text" class="form-control" name="staffname" id="notNull2" placeholder="请输入姓名" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-						<tr>
-							<td><input type="password" class="form-control" name="password" id="notNull3" placeholder="设置初始密码" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-						<tr>
-							<td><input type="text" class="form-control" name="type" id="notNull4" placeholder="员工类别 (1-超管、2-仓库、3-办公室、4-前台收银、5-进货)" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-						<tr>
-							<td><input type="text" class="form-control" name="salary" id="notNull5" placeholder="设置员工工资" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-						<tr>
-							<td><input type="text" class="form-control" name="dataflag" id="notNull6" placeholder="设置账号状态" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-						<tr>
-							<td><input type="text" class="form-control" name="createtime" id="notNull7" placeholder="入职时间" required="required" autocomplete="off" style="margin-bottom: 25px;" title="错误"
-								data-container="body" data-toggle="popover" data-placement="right"
-								data-content="此项不能为空"></td>
-						</tr>
-					</table>
-				<div style="margin-left: 100px;margin-right: 100px;margin-top: 15px;margin-bottom: 30px;">
-					<input type="button" id="submit_btn" class="btn btn-primary btn-lg btn-block" onclick="add()" value="添加">
-				</div>
-				</form>
+				<div class="col-lg-12">
+					<form method="post" action="Register" name = "Regist_form">
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">员工编号</label>
+					    <input type="text" class="form-control" name="staffid" id="inputId" autocomplete="off" placeholder="staffid" required="required" onblur="loadCheck()" title="Warning"
+							data-container="body" data-toggle="popover" data-placement="right"
+							data-content="存在重复员工编号，不允许注册">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">员工姓名</label>
+					    <input type="text" class="form-control" name="staffname" autocomplete="off" placeholder="staffname" required="required">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputPassword1">登录密码</label>
+					    <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">员工薪资</label>
+					    <input type="text" class="form-control" name="salary" placeholder="salary" required="required">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">入职时间</label>
+					    <input type="date" id="datetimepicker" class="form-control" name="createtime" placeholder="createtime" required="required">
+					  </div>
+					  <div class="form-group">
+						<select name="type" style="height: 34px;width: 136px;padding-top: 6px;padding-bottom: 6px;font-size: 14px;margin-top: 2px;border-radius: 1px;">
+						  <option value="0">请选择员工类型</option>
+						  <option value="1">超级管理员</option>
+						  <option value="2">仓库管理员</option>
+						  <option value="3">办公室员工</option>
+						  <option value="5">进货部员工</option>
+						  <option value="4">收银员</option>
+						</select>
+						<select name="dataflag"  style="height: 34px;width: 136px;padding-top: 6px;padding-bottom: 6px;font-size: 14px;margin-top: 2px;border-radius: 1px;">
+							<option value="2">请设置帐号状态</option>
+							<option value="1">可用</option>
+							<option value="0">禁用</option>
+						</select>
+					  </div>
+					  <input type="button" id="submit_btn" class="btn btn-primary" value="创建账号" onclick="doRegister()">
+					</form>
 			</div>
 		</div>
+		<div class="alert alert-warning alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		       <span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong id="alerttext"> </strong>
+		</div>
+		<div class="alert alert-success alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		       <span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong id="alerttextsucc"> </strong>
+		</div>
+		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		       <span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong id="alerttextfail"> </strong>
+		</div>
+		</div>
 		
-		<script>
-			function add(){	
-				var staffid = $('#notNull1').val();
-				var staffname = $('#notNull2').val();
-				var password = $('#notNull3').val();
-				var type = $('#notNull4').val();
-				var salary = $('#notNull5').val();
-				var dataflag = $('#notNull6').val();
-				var createtime = $('#notNull7').val();
-				$.post('../.././StaffRegister',{
-						staffid:staffid,
-						staffname:staffname,
-						password:password,
-						type:type,
-						salary:salary,
-						dataflag:dataflag,
-						createtime:createtime
-					},function(data){
-						alert("录入成功!");
-					},'json'
-				);
+		<script type="text/javascript">
+			var xmlhttp;
+			function loadCheck(){
+				var staffId = document.Regist_form.staffid.value;
+				if(staffId.length <= 0){
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else{
+					document.getElementById("submit_btn").className="btn btn-primary"
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././checkIdAvailable",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("staffId="+staffId);
+					xmlhttp.onreadystatechange=getResult;
+				}
+				
+			}
+			
+			function getResult(){
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						if(rec == "true"){
+							$('#inputId').popover('show');
+							document.getElementById("submit_btn").className="btn btn-primary disabled"
+							
+						}
+						else{
+							$('#inputId').popover('hide');
+							document.getElementById("submit_btn").className="btn btn-primary"
+						}
+					}
+					else{
+						alert("连接失败");
+					}
+				}
+			}
+			
+			function doRegister() {
+				var staffId = document.Regist_form.staffid.value;
+				var staffname = document.Regist_form.staffname.value;
+				var password = document.Regist_form.password.value;
+				var salary = document.Regist_form.salary.value;
+				var createtime = document.Regist_form.createtime.value;
+				var type = document.Regist_form.type.value;
+				var dataflag = document.Regist_form.dataflag.value;
+				if(staffId.length <= 0){
+					document.getElementById("alerttext").innerHTML="员工编号为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else if(staffname.length <= 0){
+					document.getElementById("alerttext").innerHTML="用户名为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else if(password.length <= 0){
+					document.getElementById("alerttext").innerHTML="密码为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else if(salary.length <= 0){
+					document.getElementById("alerttext").innerHTML="员工薪资为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else if(createtime.length <= 0){
+					document.getElementById("alerttext").innerHTML="入职时间为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else if(type == 0){
+					document.getElementById("alerttext").innerHTML="员工岗位未设置";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else if(dataflag == 2){
+					document.getElementById("alerttext").innerHTML="帐号状态未设置";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled"
+				}
+				else {
+					document.getElementById("submit_btn").className="btn btn-primary"
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././StaffRegister",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("staffid="+staffId+"&staffname="+staffname+"&password="+password+"&salary="+salary+"&createtime="+createtime+"&type="+type+"&dataflag="+dataflag);
+					xmlhttp.onreadystatechange=getRegisterResult;
+				}
+			}
+			
+			function getRegisterResult(){
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						if(rec == 1){
+							document.getElementById("alerttextsucc").innerHTML="帐号注册成功！";
+							$('.alert').removeClass('hide').addClass('in');
+							
+						}
+						else if(rec == 2){
+							document.getElementById("alerttextfail").innerHTML="帐号注册失败！";
+							$('.alert').removeClass('hide').addClass('in');
+						}
+					}
+					else{
+						alert("连接失败");
+					}
+				}
 			}
 		</script>
 		

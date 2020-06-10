@@ -35,7 +35,6 @@ public class UpdateStaffInfo extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
@@ -46,9 +45,9 @@ public class UpdateStaffInfo extends HttpServlet {
 		
 		staff userstaff = new staff();//新建一个用户
 		userstaff.setStaffid(request.getParameter("staffid"));	//添加员工编号
-		userstaff.setStaffname(request.getParameter("staffname"));//添加员工姓名
+		userstaff.setStaffname(request.getParameter("staffname")); //添加员工姓名
 		userstaff.setPassword(fpass);	//添加登录密码
-		userstaff.setType(Integer.parseInt(request.getParameter("type")));	//添加员工类型：1.管理员，2.仓库管理员，3.收银员
+		userstaff.setType(Integer.parseInt(request.getParameter("type")));	//添加员工类型： 1.管理员，2.仓库管理员，3.收银员
 		userstaff.setSalary(Double.parseDouble(request.getParameter("salary")));	//添加员工薪资
 		userstaff.setDataflag(Integer.parseInt(request.getParameter("dataflag")));	//添加帐号状态：1.可用，2.禁用
 		userstaff.setCreatetime(request.getParameter("createtime"));	//添加入职时间
@@ -56,7 +55,13 @@ public class UpdateStaffInfo extends HttpServlet {
 		int insertResult = 2;
 		try {
 			insertResult = DoUpdate.DoUpdateStaffInfo(userstaff);
-			pw.print(insertResult);//向Ajax传回注册结果  1:成功  2:失败
+			boolean flag = false;
+			if(insertResult == 1)
+				flag = true;
+			else
+				flag = false;
+			System.out.println(flag);
+			pw.print(flag);
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
