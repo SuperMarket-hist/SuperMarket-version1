@@ -42,7 +42,11 @@ public class FilterOfficePage implements Filter {
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
 		HttpSession session = req.getSession();
-		if(!(session.getAttribute("type").equals(1)) && !(session.getAttribute("type").equals(3)))
+		if((session.getAttribute("type") == null))
+			//session过期
+			resp.sendRedirect("http://localhost:8080/SuperMarket-vresion1/Login.html");
+		else if(!(session.getAttribute("type").equals(1)) && !(session.getAttribute("type").equals(3)))
+			//权限不符
 			resp.sendRedirect("http://localhost:8080/SuperMarket-vresion1/Login.html");
 		
 		// pass the request along the filter chain
