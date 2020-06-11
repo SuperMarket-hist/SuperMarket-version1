@@ -12,7 +12,14 @@ public class return_orders {
 	private double GoodsNum;//商品数量
 	private double GoodsMoney;//商品小结
 	private String StaffName;//收银员姓名
+	private String VIPId;//会员编号
 	
+	public String getVIPId() {
+		return VIPId;
+	}
+	public void setVIPId(String vIPId) {
+		VIPId = vIPId;
+	}
 	public String getOrderNo() {
 		return OrderNo;
 	}

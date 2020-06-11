@@ -53,7 +53,7 @@ public class ReturnOrder extends HttpServlet {
 		String jsonstr = request.getParameter("JsonStr");
 		
 		String OrderId = JSONObject.fromObject(jsonstr).getString("OrderNo");//得到订单编号
-		String UserId = JSONObject.fromObject(jsonstr).getString("UserId");//得到会员账号
+		String UserId = JSONObject.fromObject(jsonstr).getString("VIPId");//得到会员账号
 		JSONArray json = JSONObject.fromObject(jsonstr).getJSONArray("Order");//得到商品数组
 		double walletsale = 0;//退货商品总额
 		boolean result = false;//保存执行结果

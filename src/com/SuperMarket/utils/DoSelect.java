@@ -127,7 +127,7 @@ public class DoSelect {
 
 		ArrayList<staff> list = new ArrayList<staff>();
 		
-		String selectStaff = "select * from staff";//查询用户信息
+		String selectStaff = "SELECT * FROM `staff` ORDER BY dataflag DESC,type ASC";//查询用户信息
 		
 		PreparedStatement psta = JDBCTool.executePreparedStatement(selectStaff);
 		
@@ -452,7 +452,7 @@ public class DoSelect {
 		
 		ArrayList<return_orders> list = new ArrayList<return_orders>();
 		
-		String SelectOrderSQL = "SELECT o.OrderNo,o.GoodsId,g.GoodsName,g.SaPrice,o.GoodsNum,(o.GoodsNum * g.SaPrice * g.Discount),s.staffname FROM orders o,pro_goods g,staff s WHERE o.staffid = s.staffid AND o.GoodsId = g.GoodsId AND o.OrderNo = ?";
+		String SelectOrderSQL = "SELECT o.OrderNo,o.GoodsId,g.GoodsName,g.SaPrice,o.GoodsNum,(o.GoodsNum * g.SaPrice * g.Discount),s.staffname,o.UserId FROM orders o,pro_goods g,staff s WHERE o.staffid = s.staffid AND o.GoodsId = g.GoodsId AND o.OrderNo = ?";
 		
 		PreparedStatement psta = JDBCTool.getConn().prepareStatement(SelectOrderSQL);
 		psta.setString(1, OrderNo);
@@ -468,6 +468,7 @@ public class DoSelect {
 			Orders.setGoodsNum(rs.getDouble(5));
 			Orders.setGoodsMoney(rs.getDouble(6));
 			Orders.setStaffName(rs.getString(7));
+			Orders.setVIPId(rs.getString(8));
 			list.add(Orders);
 		}
 		JDBCTool.close();
