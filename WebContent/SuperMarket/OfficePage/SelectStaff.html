@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>超市管理</title>
-		<link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.css">
 		<link rel="stylesheet" href="../../js/bootstrap-3.3.7-dist/css/bootstrap.css">
 		<script type="text/javascript" src="../../js/jquery-1.11.1/jquery.js"></script>
 		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
@@ -87,7 +86,7 @@
 						
 						  <!-- Nav tabs -->
 						  <ul class="nav nav-tabs" role="tablist">
-						    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询员工</a></li>
+						    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询指定员工</a></li>
 						    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" id="allstaff" onclick="selectallInfo()">显示所有员工</a>
 						  </ul>
 						
@@ -166,9 +165,19 @@
 							var SelectStaff = eval(arr[i]);
 							var staffid = SelectStaff.staffid;
 							var staffname = SelectStaff.staffname;
-							var type = SelectStaff.type;
+							var numtype = SelectStaff.type;
+							if(numtype == 1)
+								var type = "超级管理员";							
+							else if(numtype == 2)
+								var type = "仓库管理员";
+							else if(numtype == 3)
+								var type = "办公室员工";
+							else if(numtype == 4)
+								var type = "收银员";
+							else if(numtype == 5)
+								var type = "进货部员工";
 							var salary = SelectStaff.salary;
-							var dataflag = SelectStaff.dataflag;
+							var dataflag = (SelectStaff.dataflag > 0 ? "在职" : "离职");
 							var createtime = SelectStaff.createtime;
 							staffInfo.innerHTML += '<tr><td>'+ staffid +'</td><td>'+ staffname +'</td><td>'+ type +'</td><td>'+ salary +'</td><td>'+ dataflag +'</td><td>'+ createtime +'</td></tr>';
 						}
@@ -186,9 +195,19 @@
 							var SelectStaff = eval(arr[i]);
 							var staffid = SelectStaff.staffid;
 							var staffname = SelectStaff.staffname;
-							var type = SelectStaff.type;
+							var numtype = SelectStaff.type;
+							if(numtype == 1)
+								var type = "超级管理员";							
+							else if(numtype == 2)
+								var type = "仓库管理员";
+							else if(numtype == 3)
+								var type = "办公室员工";
+							else if(numtype == 4)
+								var type = "收银员";
+							else if(numtype == 5)
+								var type = "进货部员工";
 							var salary = SelectStaff.salary;
-							var dataflag = SelectStaff.dataflag;
+							var dataflag = (SelectStaff.dataflag > 0 ? "在职" : "离职");
 							var createtime = SelectStaff.createtime;
 							staffInfoAll.innerHTML += '<tr><td>'+ staffid +'</td><td>'+ staffname +'</td><td>'+ type +'</td><td>'+ salary +'</td><td>'+ dataflag +'</td><td>'+ createtime +'</td></tr>';
 						}
