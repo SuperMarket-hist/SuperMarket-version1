@@ -191,7 +191,7 @@
 					}
 				}
 				function AddOrder(){
-					var OrderNo = Date.parse(new Date());//订单号
+					var OrderNo = (new Date()).valueOf();//订单号
 					var OrderId = document.getElementById("OrderId");
 					OrderId.innerHTML = OrderNo;
 					var UserId = document.getElementById("VIPId").value;//会员号
