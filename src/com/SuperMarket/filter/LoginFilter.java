@@ -70,14 +70,22 @@ public class LoginFilter implements Filter {
 	private boolean isLogin(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		//System.out.println(session.toString());
+<<<<<<< HEAD
+=======
+		System.out.println(session.getAttribute("staffid"));
+>>>>>>> 23d60c40ef5c0b3f32be62c8638c19f2abd8b4e8
 		if(session != null) {
 			if((session.getAttribute("staffid").equals(null)) && (session.getAttribute("type").equals(null))) {
 				return false;
 			}
 			else
 				return true;
+<<<<<<< HEAD
 		}
 		else {
+=======
+		}else {
+>>>>>>> 23d60c40ef5c0b3f32be62c8638c19f2abd8b4e8
 			return false;
 		}
 	}
