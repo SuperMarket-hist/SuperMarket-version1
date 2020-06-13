@@ -1,11 +1,13 @@
 package com.SuperMarket.utils;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.SuperMarket.bean.pro_goods;
+import com.SuperMarket.bean.profit_info;
 import com.SuperMarket.bean.return_orders;
 import com.SuperMarket.bean.staff;
 import com.SuperMarket.bean.store_goods;
@@ -530,6 +532,102 @@ public class DoSelect {
 		JDBCTool.close();
 		
 		return VIPCount;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoSelectDateInTable
+	 * @Description: 为添加或修改报表数据表之前检查是否已经存在当天的数据项
+	 * @author JamsF
+	 * @date 2020年6月12日下午7:08:16
+	 * @param Date
+	 * @return 存在返回true，不存在返回false
+	 * @throws SQLException
+	 */
+	public static boolean DoCheckDateAvailable(Date Date) throws SQLException {
+		
+		String SelectSQL = "SELECT Date FROM `profit_info` WHERE Date = ?";
+		boolean flag = false;
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(SelectSQL);
+		psta.setDate(1, Date);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		if(rs.next()) {
+			flag = true;
+		}
+		
+		JDBCTool.close();
+		
+		return flag;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoSelectDateInTableInfo
+	 * @Description: 查询报表数据项的内容
+	 * @author JamsF
+	 * @date 2020年6月12日下午7:24:49
+	 * @param Date
+	 * @return 返回查询到的profit_info对象
+	 * @throws SQLException
+	 */
+	public static profit_info DoSelectDateInTableInfo(Date Date) throws SQLException {
+		String SelectSQL = "SELECT * FROM `profit_info` WHERE Date = ?";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(SelectSQL);
+		psta.setDate(1, Date);
+		
+		ResultSet rs = psta.executeQuery();
+		profit_info oldInfo = new profit_info();
+		
+		while(rs.next()) {
+			oldInfo.setDate(rs.getDate(1));
+			oldInfo.setSaleMoney(rs.getDouble(2));
+			oldInfo.setProfit(rs.getDouble(3));
+		}
+		
+		JDBCTool.close();
+		
+		return oldInfo;
+		
+	}
+	
+	/**
+	 * 
+	 * @Title: SelectTableInfo
+	 * @Description: 查询指定日期之间的报表数据项
+	 * @author JamsF
+	 * @date 2020年6月13日上午8:50:54
+	 * @param StartDate
+	 * @param EndDate
+	 * @return 查询到的ArrayList数据
+	 * @throws SQLException
+	 */
+	public static ArrayList<profit_info> SelectTableInfo(java.sql.Date StartDate,java.sql.Date EndDate) throws SQLException{
+		
+		String SelectSQL = "SELECT * FROM profit_info WHERE Date >= ? AND Date <= ?";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(SelectSQL);
+		psta.setDate(1, StartDate);
+		psta.setDate(2, EndDate);
+		
+		ArrayList<profit_info> list = new ArrayList<profit_info>();
+		
+		ResultSet rs = psta.executeQuery();
+		
+		while(rs.next()) {
+			profit_info Info = new profit_info();
+			Info.setDate(rs.getDate(1));
+			Info.setSaleMoney(rs.getDouble(2));
+			Info.setProfit(rs.getDouble(3));
+			list.add(Info);
+		}
+		
+		JDBCTool.close();
+		
+		return list;
 	}
 	
 }

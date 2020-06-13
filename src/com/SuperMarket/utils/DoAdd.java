@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import com.SuperMarket.bean.orders;
 import com.SuperMarket.bean.pro_goods;
+import com.SuperMarket.bean.profit_info;
 import com.SuperMarket.bean.staff;
 import com.SuperMarket.bean.vip_cus;
 import com.database.pool.JDBCTool;
@@ -148,6 +149,35 @@ public class DoAdd {
 			else
 				return 2;
 		}
+		
+	}
+	
+	/**
+	 * 
+	 * @Title: InsertProfitInfo
+	 * @Description: 向报表数据表中添加数据项的方法
+	 * @author JamsF
+	 * @date 2020年6月12日下午7:37:21
+	 * @param Info
+	 * @return 成功返回true，失败则返回false
+	 * @throws SQLException
+	 */
+	public static boolean InsertProfitInfo(profit_info Info) throws SQLException {
+		String AddUserSQL = "INSERT INTO profit_info VALUE(?,?,?)";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(AddUserSQL);
+		psta.setDate(1, Info.getDate());
+		psta.setDouble(2, Info.getSaleMoney());
+		psta.setDouble(3, Info.getProfit());
+		
+		int result = psta.executeUpdate();
+		
+		JDBCTool.close();
+		
+		if(result == 1)
+			return true;
+		else
+			return false;
 		
 	}
 

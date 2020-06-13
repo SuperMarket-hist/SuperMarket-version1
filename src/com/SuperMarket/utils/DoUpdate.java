@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import com.SuperMarket.bean.orders;
+import com.SuperMarket.bean.profit_info;
 import com.SuperMarket.bean.staff;
 import com.SuperMarket.bean.wallet;
 import com.database.pool.JDBCTool;
@@ -17,6 +18,7 @@ public class DoUpdate {
 	public static String Lockvip_cus = "LOCK TABLES vip_cus WRITE";//为表加排他锁，防止出现读脏数据等错误
 	public static String Lockwallet = "LOCK TABLES wallet WRITE";
 	public static String Lockwst_goods = "LOCK TABLES wst_goods WRITE";
+	public static String Lockprofit_info = "LOCK TABLES profit_info WRITE";
 	public static String UnLockTables = "UNLOCK TABLES ";//解锁表
 	
 	/**
@@ -344,6 +346,43 @@ public class DoUpdate {
 		psta.setString(5, orders.getStaffid());
 		
 		result = psta.executeUpdate();
+		JDBCTool.close();
+		if(result == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	/**
+	 * 
+	 * @Title: DoUpdateProfitInfo
+	 * @Description: 执行更新报表数据项的方法
+	 * @author JamsF
+	 * @date 2020年6月12日下午7:19:50
+	 * @param Info
+	 * @return 更新成功返回true，失败则返回false
+	 * @throws SQLException
+	 */
+	public static boolean DoUpdateProfitInfo(profit_info Info) throws SQLException {
+		int result = 0;
+		
+		String Updateprofit_infoSQL = "UPDATE profit_info SET SaleMoney = ?,Profit = ? WHERE Date = ?";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(Lockprofit_info);//锁表
+		
+		profit_info OldInfo = DoSelect.DoSelectDateInTableInfo(Info.getDate());
+		Info.setSaleMoney(Info.getSaleMoney() + OldInfo.getSaleMoney());
+		Info.setProfit(Info.getProfit() + OldInfo.getProfit());
+		
+		psta = JDBCTool.executePreparedStatement(Updateprofit_infoSQL);
+		psta.setDouble(1, Info.getSaleMoney());
+		psta.setDouble(2, Info.getProfit());
+		psta.setDate(3, Info.getDate());
+		
+		result = psta.executeUpdate();
+		
+		psta = JDBCTool.executePreparedStatement(UnLockTables);
+		
 		JDBCTool.close();
 		if(result == 1)
 			return true;

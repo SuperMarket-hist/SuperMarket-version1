@@ -3,6 +3,7 @@ package com.SuperMarket.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,7 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.SuperMarket.bean.orders;
+import com.SuperMarket.bean.profit_info;
 import com.SuperMarket.bean.store_goods;
+import com.SuperMarket.utils.DataUtil;
+import com.SuperMarket.utils.DoAdd;
 import com.SuperMarket.utils.DoSelect;
 import com.SuperMarket.utils.DoUpdate;
 
@@ -60,6 +64,7 @@ public class DoCashier extends HttpServlet {
 		String StaffId = JSONObject.fromObject(jsonstr).getString("StaffId");//得到收银员编号
 		JSONArray json = JSONObject.fromObject(jsonstr).getJSONArray("Order");//得到商品数组
 		double walletsale = 0;//订单总额
+		double profit = 0;
 		boolean result = false;//保存执行结果
 		
 		for(int i = 0;i < json.size();i++) {//遍历json数组
@@ -74,6 +79,7 @@ public class DoCashier extends HttpServlet {
 				e.printStackTrace();
 			}
 			walletsale += (goods.getSaPrice()) * GoodsNum;//计算总销售额
+			profit += (goods.getMarketPrice()) * GoodsNum;//计算净收益
 			try {
 				result =DoUpdate.DoSaleUpdateGoods(GoodsId, GoodsNum);//商品出库
 				
@@ -100,6 +106,29 @@ public class DoCashier extends HttpServlet {
 		//更新积分
 		try {
 			result =DoUpdate.DoUpdateVipCount(UserId, (int)(walletsale));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//更新报表数据
+		profit_info MoneyInfo = new profit_info();
+		try {
+			MoneyInfo.setDate(DataUtil.timeStamp2Date(OrderId));
+		} catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}//得到订单日期数据
+		MoneyInfo.setSaleMoney(walletsale);
+		MoneyInfo.setProfit(profit);
+		try {
+			boolean flag = DoSelect.DoCheckDateAvailable(MoneyInfo.getDate());
+			if(flag == true)
+				result = DoUpdate.DoUpdateProfitInfo(MoneyInfo);
+			else
+				result = DoAdd.InsertProfitInfo(MoneyInfo);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
