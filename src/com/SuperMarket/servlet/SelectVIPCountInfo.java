@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.SuperMarket.bean.vip_cus;
 import com.SuperMarket.utils.DoSelect;
 
-import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * Servlet implementation class SelectVIPCountInfo
@@ -57,8 +57,8 @@ public class SelectVIPCountInfo extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		JSONArray returnArray = JSONArray.fromObject(VIPCount);
-		String ReturnStr = returnArray.toString();
+		JSONObject jsonobj = JSONObject.fromObject(VIPCount);
+		String ReturnStr = jsonobj.toString();
 		
 		pw.print(ReturnStr);
 	}

@@ -8,17 +8,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * Servlet Filter implementation class LoginFilter
  */
 @WebFilter(	filterName = "LoginFilter",
-		 	urlPatterns = "*.html", dispatcherTypes = {}
-			
-		)
+		 	urlPatterns = {"*.html"})
 public class LoginFilter implements Filter {
 
     /**
@@ -46,9 +44,6 @@ public class LoginFilter implements Filter {
 		
 		StringBuffer url = req.getRequestURL();
 		
-		/* 找到此页面的name */
-		//int idx = url.lastIndexOf("/");
-		//String urlname = url.substring(idx + 1);
 		String urlname = url.toString();
 		
 		if(!urlname.equals("http://localhost:8080/SuperMarket-vresion1/Login.html")) {
@@ -68,16 +63,30 @@ public class LoginFilter implements Filter {
 	}
 	
 	private boolean isLogin(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		if(session != null) {
-			if((session.getAttribute("staffid").equals(null)) && (session.getAttribute("type").equals(null))) {
+		Cookie[] cookies = request.getCookies();
+		
+		if(cookies != null && cookies.length > 0) {
+			String inputStaffName = "";
+			String inputStaffid = "";
+			for(Cookie  cookie : cookies) {
+				if((cookie.getName( )).compareTo("inputStaffName") == 0) { 
+					inputStaffName = cookie.getValue();
+				}
+				else if((cookie.getName( )).compareTo("inputStaffid") == 0) {
+					inputStaffid = cookie.getValue();
+				}
+			}
+			if(inputStaffName.equals("") || inputStaffid.equals("")) {
+				//cookie中内容为空
 				return false;
 			}
-			else
+			else {
 				return true;
+			}
 		}
-		else
+		else {
 			return false;
+		}
 	}
 
 	/**
