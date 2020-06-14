@@ -22,7 +22,7 @@
 					}
 				</script>
 			</div>
-			<div class="col-lg-1" style="font-size: 20px;position: relative;top:50%;transform:translateY(-50%);">
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
 				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
 				<span id="StaffName"></span>
 				<script type="text/javascript">
@@ -46,9 +46,9 @@
 				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
 				<script type="text/javascript">
 					function checkout() {
-						document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-						document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-						window.location.href="Login.html";
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
 					}
 				</script>
 			</div>
@@ -100,16 +100,18 @@
 				$.post('../.././SelectStoreWarn',{
 						
 					},function(data){
-						if(data == ""){
-							//$('#warnWord').text('当前暂无预警商品!');	
-							document.getElementById("table_sta").style.display='';
+						var testData = "";
+						for(var i in data){
+							var Goods = data[i];
+							testData = Goods.goodsID;
+						}
+						if(testData == ""){
+							document.getElementById("Goodsnull").style.display='';
 						}
 						else{
 							var storeWarnInfo = document.getElementById("storeWarnInfo");
 							storeWarnInfo.innerHTML = '<tr><th>商品编号</th><th>商品名称</th><th>规格</th><th>单位</th><th>进价</th><th>售价</th><th>折扣</th><th>生产日期</th><th>有效日期</th><th>类别</th><th>供应商</th><th>商品库存量</th><th>库存预警</th></tr>';
-							//var arr = JSON.parse(data);
 							for(var i in data){//遍历arr数组时，i为索引
-							//	var Goods = eval(data[i]);
 								var Goods = data[i];
 								var GoodsID = Goods.goodsID;
 								var GoodsName = Goods.goodsName;

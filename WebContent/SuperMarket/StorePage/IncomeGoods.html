@@ -34,7 +34,7 @@
 					}
 				</script>
 			</div>
-			<div class="col-lg-1" style="font-size: 20px;position: relative;top:50%;transform:translateY(-50%);">
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
 				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
 				<span id="StaffName"></span>
 				<script type="text/javascript">
@@ -58,9 +58,9 @@
 				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
 				<script type="text/javascript">
 					function checkout() {
-						document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-						document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-						window.location.href="Login.html";
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
 					}
 				</script>
 			</div>
@@ -116,7 +116,7 @@
 							document.getElementById("submit_btn").className="btn btn-primary btn-lg btn-block"
 							if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
 							else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
-							xmlhttp.open("POST",".././checkGoodsIdAvailable",true);
+							xmlhttp.open("POST","../.././checkGoodsIdAvailable",true);
 							xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 							xmlhttp.send("GoodsId="+GoodsId);
 							xmlhttp.onreadystatechange=getResult;
@@ -146,6 +146,8 @@
 					function IncomeGoods() {
 						var GoodsId = document.getElementById("GoodsId").value;
 						var GoodsNum = document.getElementById("GoodsNum").value;
+						console.log(GoodsId);
+						console.log(GoodsNum);
 						if(GoodsId.length <= 0 || GoodsNum.length <= 0){
 							document.getElementById("submit_btn").className="btn btn-primary btn-lg btn-block disabled"
 						}
@@ -153,9 +155,9 @@
 							document.getElementById("submit_btn").className="btn btn-primary btn-lg btn-block"
 							if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
 							else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
-							xmlhttp.open("POST",".././UpdateStoreGoodsNum",true);
+							xmlhttp.open("POST","../.././UpdateStoreGoodsNum",true);
 							xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-							xmlhttp.send("GoodsId="+GoodsId + "&GoodsNum=" + GoodsNum);
+							xmlhttp.send("GoodsId="+GoodsId + "&GoodsNumber=" + GoodsNum);
 							xmlhttp.onreadystatechange=getIncomeResult;
 						}
 					}

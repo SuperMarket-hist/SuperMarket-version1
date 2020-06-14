@@ -28,7 +28,7 @@
 					}
 				</script>
 			</div>
-			<div class="col-lg-1" style="font-size: 20px;position: relative;top:50%;transform:translateY(-50%);">
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
 				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
 				<span id="StaffName"></span>
 				<script type="text/javascript">
@@ -52,9 +52,9 @@
 				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
 				<script type="text/javascript">
 					function checkout() {
-						document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-						document.cookie = "password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-						window.location.href="Login.html";
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
 					}
 				</script>
 			</div>
@@ -95,7 +95,7 @@
 						<div class="col-lg-12" style="margin-top: 20px;">
 							<form>
 							<div class="col-lg-4" style="padding-left: 0;">
-								<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="请输入货号或商品名称进行查询">
+								<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="请输入货号进行查询">
 							</div>
 							<div>
 								<input type="button" class="btn btn-primary" onclick="selectgoodInfo()" value="点击查询" />
@@ -108,12 +108,26 @@
 							
 							  </table>
 							</div>
-						</div>	
+						</div>
+						<div class="col-lg-12" id="Goodsnull" style="display: none; margin-top: 20px;">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-4">
+									<h1 class="text-center lead">未查询到商品信息！</h1>
+								</div>
+								<div class="col-lg-4"></div>
+							</div>	
 					</div>
 				    <div role="tabpanel" class="tab-pane" id="profile">
 						<div class="col-lg-12" id="table_sta1" style="margin-top: 20px;display: none; padding: 0;">
 							<div class="table-responsive">
 							<table class="table table-condensed" id="storeInfoAll"></table>
+							<div class="col-lg-12" id="GoodsAllnull" style="display: none; margin-top: 20px;">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-4">
+									<h1 class="text-center lead">未查询到商品信息！</h1>
+								</div>
+								<div class="col-lg-4"></div>
+							</div>
 							</div>
 						</div>
 					</div>
@@ -156,8 +170,11 @@
 					if(xmlhttp.status==200){
 						var rec=xmlhttp.responseText;
 						var Goods = JSON.parse(rec);
-						console.log(Goods);
-						var storeInfo = document.getElementById("storeInfo");
+						if(Goods.goodsID == ""){
+							document.getElementById("Goodsnull").style.display='';
+						}
+						else{
+							var storeInfo = document.getElementById("storeInfo");
 							var GoodsID = Goods.goodsID;
 							var GoodsName = Goods.goodsName;
 							var Specs = Goods.specs;
@@ -172,8 +189,9 @@
 							var GoodsStock = Goods.goodsStock;
 							var WarnStock = Goods.warnStock;
 							storeInfo.innerHTML += '<tr><td>'+ GoodsID +'</td><td>'+ GoodsName +'</td><td>'+ Specs +'</td><td>'+ Unit +'</td><td>'+ MarketPrice +'</td><td>'+ SaPrice +'</td><td>'+ Discount +'</td><td>'+ CTime +'</td><td>'+ STime +'</td><td>'+ Category +'</td><td>'+ Factory +'</td><td>'+ GoodsStock +'</td><td>'+ WarnStock +'</td></tr>';
-						
-						document.getElementById("table_sta").style.display='';
+							document.getElementById("table_sta").style.display='';
+						}
+							
 					}
 				}
 			}

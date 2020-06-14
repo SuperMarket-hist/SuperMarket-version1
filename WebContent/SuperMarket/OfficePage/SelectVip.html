@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>超市管理</title>
+		<link rel="stylesheet" href="../../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<script type="text/javascript" src="../../js/jquery-1.11.1/jquery.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+	</head>
+	<body>
+		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
+			<div class="col-lg-8"></div>
+			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span id="tit_time" style="margin-right: 20px;"></span>
+				<script type="text/javascript">
+					var interval=self.setInterval("gettime()",500)
+					function gettime() {
+						var time = new Date();
+						var timestr = time.toLocaleString();
+						var tit_time = document.getElementById("tit_time");
+						tit_time.innerText=timestr;
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
+				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+				<span id="StaffName"></span>
+				<script type="text/javascript">
+					var outputspan = document.getElementById("StaffName");
+					outputspan.innerHTML = getCookie("inputStaffName");
+					function getCookie(cname)
+					{
+					  var name = cname + "=";
+					  var ca = document.cookie.split(';');
+					  for(var i=0; i<ca.length; i++) 
+					  {
+					    var c = ca[i].trim();
+					    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+					  }
+					  return "";
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
+				<script type="text/javascript">
+					function checkout() {
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
+					}
+				</script>
+			</div>
+		</div>
+		<div class="col-lg-2" style="margin-top: 30px;text-align: center;">
+			<ul class="nav nav-pills nav-stacked">
+		  		<li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/StaffManageIndex.html">员工管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+		  		<li role="presentation" class="active"><a href="#">会员管理</a></li>
+		  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li>
+		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-10">
+			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
+				<ul class="nav nav-pills nav-stacked">
+				  <li role="presentation"><a href="RegistVip.html">注册会员</a></li>
+				  <li role="presentation" class="active"><a href="#">查询会员</a></li>
+				</ul>
+			</div>
+			<div class="col-lg-10">
+				<div class="page-header">
+				  <h1><small>VIP信息查询</small></h1>
+				</div>
+				<div class="col-lg-12">
+					<form method="post" action="Select" name = "Select_form">
+						<table>
+							<tr>
+								<td>
+						   			<input type="text" class="form-control" name="UserId" id="UserId" autocomplete="off" placeholder="会员帐号" required="required">
+						  		</td>
+								<td>
+									<input style="width: 150px;float: right; margin-left: 20px;" type="button" id="submit_btn" class="btn btn-primary" onclick="selectVip()" value="查询">
+								</td>
+							</tr>
+						</table>
+					</form>
+				</div>
+				<div class="col-lg-12" id="table_vip" style="margin-top: 20px;">
+					<table class="table table-condensed" id="vipInfo"></table>
+					<div class="col-lg-12" id="Goodsnull" style="display: none;">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-4">
+							<h1 class="text-center lead">未查询到会员信息！</h1>
+						</div>
+						<div class="col-lg-4"></div>
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-warning alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		       <span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong id="alerttext"> </strong>
+		</div>
+		<div class="alert alert-success alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		       <span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong id="alerttextsucc"> </strong>
+		</div>
+		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		       <span aria-hidden="true">&times;</span>
+		    </button>
+		    <strong id="alerttextfail"> </strong>
+		</div>
+		</div>
+		
+		<script type="text/javascript">
+			function selectVip(){
+				vipInfo.innerHTML = '<tr><th>会员编号</th><th>会员姓名</th><th>当前积分</th></tr>';
+				var UserId = document.Select_form.UserId.value;
+				if(UserId.length <= 0){
+					document.getElementById("alerttext").innerHTML="会员编号为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled";
+				}
+				else{
+					document.getElementById("submit_btn").className="btn btn-primary";
+					$.post('../.././SelectVIPCountInfo',{
+						VIPId:UserId
+						},function(data){
+							if(data.userId == ""){
+								document.getElementById("Goodsnull").style.display='';
+							}
+							else{
+								var vipInfo = document.getElementById("vipInfo");
+								var UserId = data.userId;
+								var UserName = data.userName;
+								var UserScore = data.userScore;
+								vipInfo.innerHTML += '<tr><td>'+ UserId +'</td><td>'+ UserName +'</td><td>'+ UserScore +'</td></tr>';
+							document.getElementById("table_vip").style.display='';
+							}
+						},'json'
+					);
+				}
+			}
+		
+		</script>
+	</body>
+</html>
