@@ -178,7 +178,7 @@ public class DoUpdate {
 		if(checkstaffAvailable == true) {
 			//用户存在，执行修改
 			
-			String newPassword = MD5Demo.md5(staffid);//将员工编号加密作为原始密码
+			String newPassword = MD5Demo.md5(MD5Demo.md5(staffid) + staffid);//将员工编号加密作为原始密码
 			String UpdateStaffInfoSQL = "UPDATE staff set password=? WHERE staffid=?";
 			
 			PreparedStatement psta = JDBCTool.executePreparedStatement(UpdateStaffInfoSQL);

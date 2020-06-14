@@ -90,6 +90,36 @@ public class DoSelect {
 	
 	/**
 	 * 
+	 * @Title: DoSelectStaffPassword
+	 * @Description: 查询指定员工密码
+	 * @author JamsF
+	 * @date 2020年6月14日上午11:09:12
+	 * @param staffid
+	 * @return 返回要查询员工的密码
+	 * @throws SQLException
+	 */
+	public static String DoSelectStaffPassword(String staffid) throws SQLException {
+		
+		String password = "";
+		
+		String selectStaff = "select password from staff where staffid=?";//查询指定员工的职位
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(selectStaff);
+		psta.setString(1, staffid);
+		
+		ResultSet rs = psta.executeQuery();
+		
+		while(rs.next()) {
+			password = rs.getString(1);
+		}
+		
+		JDBCTool.close();
+		
+		return password;
+	}
+	
+	/**
+	 * 
 	 * @Title: DoSelectStaffType
 	 * @Description: 为权限控制的filter提供查询指定员工职位的方法
 	 * @author JamsF
