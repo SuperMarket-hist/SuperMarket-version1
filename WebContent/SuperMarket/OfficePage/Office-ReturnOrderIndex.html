@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>超市管理</title>
+		<link rel="stylesheet" href="../../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<script type="text/javascript" src="../../js/jquery-1.11.1/jquery.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+	</head>
+	<body>
+		<div class="alert alert-success alert-dismissable hide" role="alert" style="position: absolute;top:50px;right: 10px;">
+	       <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+	          <span aria-hidden="true">&times;</span>
+	       </button>
+	       <strong id="alertsuccess">退货成功</strong>
+		</div>
+		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;top:50px;right: 10px;">
+	       <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+	          <span aria-hidden="true">&times;</span>
+	       </button>
+	       <strong id="alertsuccess">退货失败</strong>
+		</div>
+		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
+			<div class="col-lg-8"></div>
+			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span id="tit_time" style="margin-right: 20px;"></span>
+				<script type="text/javascript">
+					var interval=self.setInterval("gettime()",500)
+					function gettime() {
+						var time = new Date();
+						var timestr = time.toLocaleString();
+						var tit_time = document.getElementById("tit_time");
+						tit_time.innerText=timestr;
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
+				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+				<span id="StaffName"></span>
+				<script type="text/javascript">
+					var outputspan = document.getElementById("StaffName");
+					outputspan.innerHTML = getCookie("inputStaffName");
+					console.log(getCookie("inputStaffName"));
+					function getCookie(cname)
+					{
+					  var name = cname + "=";
+					  var ca = document.cookie.split(';');
+					  for(var i=0; i<ca.length; i++) 
+					  {
+					    var c = ca[i].trim();
+					    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+					  }
+					  return "";
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
+				<script type="text/javascript">
+					function checkout() {
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
+					}
+				</script>
+			</div>
+		</div>
+		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
+			<ul class="nav nav-pills nav-stacked">
+		  		<!-- <li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li> -->
+		  		<li role="presentation"><a href="../OfficePage/Office-TableIndex.html">报表功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/Office-StaffManageIndex.html">员工管理</a></li>
+		  		<li role="presentation" class="active"><a href="#">退货功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/Office-VIPManageIndex.html">会员管理</a></li>
+	<!-- 	  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li>
+		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li> -->
+				<li role="presentation"><a href="Office-ChangePassword.html">修改密码</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-10">
+			<div class="page-header col-lg-12" style="margin: 0;">
+				<h1><small>退货业务</small></h1>
+			</div>
+			<div class="col-lg-5" style="margin-top:20px; ">
+				<form method="post" action="" name = "ReturnOrderform">
+					<table>
+						<tr>
+							<td>
+								<input type="text" class="form-control" name="OrderNo" id="OrderNo" autocomplete="off" placeholder="请输入订单号" required="required">
+							</td>
+							<td>
+								<input style="margin-left:20px; width: 100px;" type="button" id="submit_btn" class="btn btn-primary" onclick="SelectOrder()" value="确认" />
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div class="col-lg-12" style="margin-top: 30px;">
+				
+				<table class="table table-closed table-hover" id="OrderTable" style="display: none;">
+						  	
+				</table>
+				<div class="col-lg-12" id="Goodsnull">
+					<div class="col-lg-4"></div>
+					<div class="col-lg-4" id="OrderNull" style="display: none">
+						<h1 class="text-center lead">未查询到订单信息！</h1>
+					</div>
+					<div class="col-lg-4"></div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			var xmlhttp;
+			var GoodsList = [];
+			var VIPId = "";
+			var OrderNo = "";
+			function SelectOrder() {
+				var OrderNo = document.ReturnOrderform.OrderNo.value;//获取订单号
+				if(OrderNo != ""){
+					document.getElementById("OrderTable").innerHTML = '<tr><th>订单编号</th><th>商品编号</th><th>商品名称</th><th>销售单价</th><th>商品数量</th><th>金额小结</th><th>员工姓名</th><th>操作</th></tr>';
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././SelectOrderInfo",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("OrderNo="+OrderNo);
+					xmlhttp.onreadystatechange=getResult;
+				}
+				else{
+					document.getElementById("OrderNull").style.display = '';
+				}
+			}
+			
+			function getResult() {
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						if(rec == ""){
+							document.getElementById("OrderNull").style.display = '';
+						}
+						else{
+							var arr = JSON.parse(rec);
+							for(var i in arr){//遍历arr数组时，i为索引
+								var Order = eval(arr[i]);
+								OrderNo = Order.orderNo;
+								var GoodsId = Order.goodsId;
+								var GoodsName = Order.goodsName;
+								var SaPrice = Order.saPrice;
+								var GoodsNum = Order.goodsNum;
+								var GoodsMoney = Order.goodsMoney;
+								var StaffName = Order.staffName;
+								VIPId = Order.VIPId;
+								var jsonObj = {
+										"GoodsId":GoodsId,
+										"GoodsNum":GoodsNum//记录所在行
+									}
+									console.log(jsonObj);
+									GoodsList.push(jsonObj);
+								document.getElementById("OrderTable").innerHTML += '<tr><td>'+ OrderNo +'</td><td>'+ GoodsId +'</td><td>'+ GoodsName +'</td><td>'+ SaPrice +'</td><td>'+ GoodsNum +'</td><td>'+ GoodsMoney +'</td><td>'+ StaffName +'</td><td><input type="button" id="' + i + '" class="btn btn-xs btn-danger" onclick="DeleteOrder(event)" value="删除" /></td></tr>';
+							}
+							document.getElementById("OrderTable").style.display='';
+						}
+					}
+				}
+			}
+			
+			function DeleteOrder(event) {
+				event = event ? event : window.event;
+				var obj = event.srcElement ? event.srcElement : event.target;
+				var Number = obj.id;
+				var GoodsInfoList = [];
+				var jsonobj = GoodsList[Number];
+				console.log(jsonobj);
+				GoodsInfoList.push(jsonobj);
+				var JsonStr = {//组成json
+						"OrderNo":OrderNo,
+						"VIPId":VIPId,
+						"Order":GoodsInfoList
+				}
+				console.log(JsonStr);
+				if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+				else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+				xmlhttp.open("POST","../.././ReturnOrder",true);
+				xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				xmlhttp.send("JsonStr="+JSON.stringify(JsonStr));
+				xmlhttp.onreadystatechange=getDeleteResult(event);
+				event = event ? event : window.event;
+				var obj = event.srcElement ? event.srcElement : event.target;
+				$(obj).parents("tr").remove();
+			}
+			
+			function getDeleteResult(event) {
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						if(rec == "true"){
+							$('.alert-success').removeClass('hide').addClass('in');
+						}
+						else{
+							SelectOrder();
+							$('.alert-danger').removeClass('hide').addClass('in');
+						}
+					}
+				}
+			}
+		</script>
+	</body>
+</html>

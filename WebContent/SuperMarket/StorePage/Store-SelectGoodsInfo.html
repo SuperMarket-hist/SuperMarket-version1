@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>超市管理</title>
+		<link rel="stylesheet" href="../../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<script type="text/javascript" src="../../js/jquery-1.11.1/jquery.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+	</head>
+	<body>
+		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;top:50px;right: 10px;">
+		       <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+		          <span aria-hidden="true">&times;</span>
+		       </button>
+		       <strong id="alerttext"> </strong>
+		</div>
+		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
+			<div class="col-lg-8"></div>
+			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span id="tit_time" style="margin-right: 20px;"></span>
+				<script type="text/javascript">
+					var interval=self.setInterval("gettime()",500)
+					function gettime() {
+						var time = new Date();
+						var timestr = time.toLocaleString();
+						var tit_time = document.getElementById("tit_time");
+						tit_time.innerText=timestr;
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
+				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+				<span id="StaffName"></span>
+				<script type="text/javascript">
+					var outputspan = document.getElementById("StaffName");
+					outputspan.innerHTML = getCookie("inputStaffName");
+					console.log(getCookie("inputStaffName"));
+					function getCookie(cname)
+					{
+					  var name = cname + "=";
+					  var ca = document.cookie.split(';');
+					  for(var i=0; i<ca.length; i++) 
+					  {
+					    var c = ca[i].trim();
+					    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+					  }
+					  return "";
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
+				<script type="text/javascript">
+					function checkout() {
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
+					}
+				</script>
+			</div>
+		</div>
+		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
+			<ul class="nav nav-pills nav-stacked">
+		  		<li role="presentation" class="active"><a href="#">仓储管理</a></li>
+		  		<!-- <li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/StaffManageIndex.html">员工管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/VIPManageIndex.html">会员管理</a></li>
+		  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li> -->
+		  		<li role="presentation"><a href="Store-ChangePassword.html">修改密码</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-10">
+			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
+				<ul class="nav nav-pills nav-stacked">
+				  	<li role="presentation" class="active"><a href="#">商品信息查询</a></li>
+					<li role="presentation"><a href="Store-SelectDateGoods.html">临期商品查询</a></li>
+					<li role="presentation"><a href="Store-SelectWarmGoods.html">查询预警信息</a></li>
+					<li role="presentation"><a href="Store-IncomeGoods.html">商品入库</a></li>
+				</ul>
+			</div>
+			<div class="col-lg-10" style="padding-top: 50px;">
+				<div style="margin-left: 15px;">
+				
+				  <!-- Nav tabs -->
+				  <ul class="nav nav-tabs" role="tablist">
+				    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">查询单个商品</a></li>
+				    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" id="allStores" onclick="allStores()">显示所有商品</a></li>
+				  </ul>
+				
+				  <!-- Tab panes -->
+				  <div class="tab-content">
+				    <div role="tabpanel" class="tab-pane active" id="home" style=" padding: 0;">
+						<div class="col-lg-12" style="margin-top: 20px;">
+							<form>
+							<div class="col-lg-4" style="padding-left: 0;">
+								<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock" placeholder="请输入货号进行查询">
+							</div>
+							<div>
+								<input type="button" class="btn btn-primary" onclick="selectgoodInfo()" value="点击查询" />
+							</div>
+							</form>
+						</div>
+						<div class="col-lg-12" id="table_sta" style="margin-top: 20px;display: none; padding: 0;">
+							<div class="table-responsive">
+							  <table class="table table-condensed" id="storeInfo">
+							
+							  </table>
+							</div>
+						</div>
+						<div class="col-lg-12" id="Goodsnull" style="display: none; margin-top: 20px;">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-4">
+									<h1 class="text-center lead">未查询到商品信息！</h1>
+								</div>
+								<div class="col-lg-4"></div>
+							</div>	
+					</div>
+				    <div role="tabpanel" class="tab-pane" id="profile">
+						<div class="col-lg-12" id="table_sta1" style="margin-top: 20px;display: none; padding: 0;">
+							<div class="table-responsive">
+							<table class="table table-condensed" id="storeInfoAll"></table>
+							<div class="col-lg-12" id="GoodsAllnull" style="display: none; margin-top: 20px;">
+								<div class="col-lg-4"></div>
+								<div class="col-lg-4">
+									<h1 class="text-center lead">未查询到商品信息！</h1>
+								</div>
+								<div class="col-lg-4"></div>
+							</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			var xmlhttp;
+			function selectgoodInfo(){
+				var goodsid = document.getElementById("inputHelpBlock").value;
+				storeInfo.innerHTML = '<tr><th>商品编号</th><th>商品名称</th><th>规格</th><th>单位</th><th>进价</th><th>售价</th><th>折扣</th><th>生产日期</th><th>有效日期</th><th>类别</th><th>供应商</th><th>商品库存量</th><th>库存预警</th>';
+				if(goodsid.length <= 0){
+					document.getElementById("alerttext").innerHTML="请输入要查询的商品编号";
+					$('.alert-danger').removeClass('hide').addClass('in');
+				}
+				else{
+					$('.alert-danger').removeClass('in').addClass('hide');
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././SelectStoreInfo",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("goodsid="+goodsid);
+					xmlhttp.onreadystatechange=getResult;
+				}
+			}
+			function allStores(){
+				var storeInfoAll = document.getElementById("storeInfoAll");
+				storeInfoAll.innerHTML = '<tr><th>商品编号</th><th>商品名称</th><th>规格</th><th>单位</th><th>进价</th><th>售价</th><th>折扣</th><th>生产日期</th><th>有效日期</th><th>类别</th><th>供应商</th><th>商品库存量</th><th>库存预警</th>';
+				if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+				else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+				xmlhttp.open("POST","../.././SelectStoreInfoAll",true);
+				xmlhttp.send("information=getall");
+				xmlhttp.onreadystatechange=getResultAll;
+			}
+			
+			function getResult(){
+				if (xmlhttp.readyState==4) {		
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						var Goods = JSON.parse(rec);
+						if(Goods.goodsID == ""){
+							document.getElementById("Goodsnull").style.display='';
+						}
+						else{
+							var storeInfo = document.getElementById("storeInfo");
+							var GoodsID = Goods.goodsID;
+							var GoodsName = Goods.goodsName;
+							var Specs = Goods.specs;
+							var Unit = Goods.unit;
+							var MarketPrice = Goods.marketPrice;
+							var SaPrice = Goods.saPrice;
+							var Discount = Goods.discount;
+							var CTime = Goods.CTime;
+							var STime = Goods.STime;
+							var Category = Goods.category;
+							var Factory = Goods.factory;
+							var GoodsStock = Goods.goodsStock;
+							var WarnStock = Goods.warnStock;
+							storeInfo.innerHTML += '<tr><td>'+ GoodsID +'</td><td>'+ GoodsName +'</td><td>'+ Specs +'</td><td>'+ Unit +'</td><td>'+ MarketPrice +'</td><td>'+ SaPrice +'</td><td>'+ Discount +'</td><td>'+ CTime +'</td><td>'+ STime +'</td><td>'+ Category +'</td><td>'+ Factory +'</td><td>'+ GoodsStock +'</td><td>'+ WarnStock +'</td></tr>';
+							document.getElementById("table_sta").style.display='';
+						}
+							
+					}
+				}
+			}
+			function getResultAll(){
+				if (xmlhttp.readyState==4) {
+					if(xmlhttp.status==200){
+						var rec=xmlhttp.responseText;
+						var arr = JSON.parse(rec);
+						var storeInfoAll = document.getElementById("storeInfoAll");
+						for(var i in arr){//遍历arr数组时，i为索引
+							var Goods = eval(arr[i]);
+							var GoodsID = Goods.goodsID;
+							var GoodsName = Goods.goodsName;
+							var Specs = Goods.specs;
+							var Unit = Goods.unit;
+							var MarketPrice = Goods.marketPrice;
+							var SaPrice = Goods.saPrice;
+							var Discount = Goods.discount;
+							var CTime = Goods.CTime;
+							var STime = Goods.STime;
+							var Category = Goods.category;
+							var Factory = Goods.factory;
+							var GoodsStock = Goods.goodsStock;
+							var WarnStock = Goods.warnStock;
+							storeInfoAll.innerHTML += '<tr><td>'+ GoodsID +'</td><td>'+ GoodsName +'</td><td>'+ Specs +'</td><td>'+ Unit +'</td><td>'+ MarketPrice +'</td><td>'+ SaPrice +'</td><td>'+ Discount +'</td><td>'+ CTime +'</td><td>'+ STime +'</td><td>'+ Category +'</td><td>'+ Factory +'</td><td>'+ GoodsStock +'</td><td>'+ WarnStock +'</td></tr>';
+						}
+						document.getElementById("table_sta1").style.display='';
+					}
+				}
+			}
+		</script>
+		
+	</body>
+</html>

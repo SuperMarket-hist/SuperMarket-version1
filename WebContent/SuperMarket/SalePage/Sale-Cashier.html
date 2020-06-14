@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>超市管理</title>
+		<link rel="stylesheet" href="../../js/bootstrap-3.3.7-dist/css/bootstrap.css">
+		<script type="text/javascript" src="../../js/jquery-1.11.1/jquery.js"></script>
+	</head>
+	<body>
+		<div id="head_tit" class="col-lg-12" style="height:50px;padding-top: 5px;padding-bottom:5px;box-shadow: 0px 1px 4px rgba(0,0,0,0.4);">
+			<div class="col-lg-8"></div>
+			<div class="col-lg-2" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span id="tit_time" style="margin-right: 20px;"></span>
+				<script type="text/javascript">
+					var interval=self.setInterval("gettime()",500)
+					function gettime() {
+						var time = new Date();
+						var timestr = time.toLocaleString();
+						var tit_time = document.getElementById("tit_time");
+						tit_time.innerText=timestr;
+					}
+				</script>
+			</div>
+			<div class="col-lg-1" style="font-size: 15px;position: relative;top:50%;transform:translateY(-50%);">
+				<span class="glyphicon glyphicon glyphicon-user" aria-hidden="true"></span>
+				<span id="StaffName"></span>
+				<script type="text/javascript">
+					var outputspan = document.getElementById("StaffName");
+					outputspan.innerHTML = getCookie("inputStaffName");
+					console.log(getCookie("inputStaffName"));
+					function getCookie(cname)
+					{
+					  var name = cname + "=";
+					  var ca = document.cookie.split(';');
+					  for(var i=0; i<ca.length; i++) 
+					  {
+					    var c = ca[i].trim();
+					    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+					  }
+					  return "";
+					}
+				</script> 
+			</div>
+			<div class="col-lg-1" style="position: relative;top:50%;transform:translateY(-50%);">
+				<span style="margin-right: 20px;"><button class="btn btn-danger" onclick="checkout()">注销登录</button></span>
+				<script type="text/javascript">
+					function checkout() {
+						document.cookie = "inputStaffName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						document.cookie = "inputStaffid=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/SuperMarket-vresion1;";
+						window.location.href="http://localhost:8080/SuperMarket-vresion1/Login.html";
+					}
+				</script>
+			</div>
+		</div>
+		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
+			<ul class="nav nav-pills nav-stacked">
+				<!-- <li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li>
+				<li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/StaffManageIndex.html">员工管理</a></li>
+				<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+				<li role="presentation"><a href="../OfficePage/VIPManageIndex.html">会员管理</a></li>
+				<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li> -->
+		  		<li role="presentation" class="active"><a href="#">收银业务</a></li>
+				<li role="presentation"><a href="Sale-ChangePassword.html">修改密码</a></li>
+			</ul>
+		</div>
+		<div class="col-lg-10">
+			<div class="page-header col-lg-12" style="margin-top: 0px;">
+			  <h1><small>收银中心</small></h1>
+			</div>
+			<div class="col-lg-4">
+				<form action="" method="post" class="form-horizontal text-left" name="Cashier">
+					<table>
+						<tr>
+							<td><input type="text" class="form-control" name="GoodsId" id="GoodsId" placeholder="请扫描货号" autocomplete="off" style="margin-bottom: 25px;"></td>
+							<td><input type="button" id="submit_btn" class="btn btn-primary" style="margin-bottom: 25px;margin-left: 30px;" onclick="AddGoods()" value="添加"></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div class="col-lg-3">
+				<input type="text" class="form-control" name="VIPId" id="VIPId" placeholder="会员卡号" autocomplete="off" style="margin-bottom: 25px;">
+			</div>	
+			<div class="col-lg-1">
+				<input type="button" id="submit_btn" class="btn btn-primary" style="margin-bottom: 25px;" onclick="AddOrder()" value="结账">
+			</div>
+			<div>
+			<!--startprint-->
+				<div class="col-lg-10" id="table_order" style="margin-top: 20px;display: none;">
+					<div class="table-responsive">
+						<h2 style="text-align: center;">购物清单</h2>
+						<table class="table table-condensed" id="GoodsTable">
+							<tr>
+								<th>商品编号</th>
+								<th>商品名称</th>
+								<th>单价</th>
+								<th>保质期</th>
+								<th>数量</th>
+								<th>小计</th>
+								<th>操作</th>
+							</tr>	  	
+						</table>
+						<div style="margin-top: 40px;">
+							<div class="col-lg-3" style="font-size: 15px;">
+								<strong>总计： <span id="money"></span></strong>
+							</div>
+							<div class="col-lg-3" style="font-size: 15px;">
+								<strong>订单号： <span id="OrderId"></span></strong>
+							</div>
+							<div class="col-lg-3" style="font-size: 15px;">
+								<strong>会员账号： <span id="UserId"></span></strong>
+							</div>
+							<div class="col-lg-3" style="font-size: 15px;">
+								<strong>员工编号： <span id="StaffId"></span></strong>
+							</div>
+						</div>					
+					</div>
+				</div>
+				<!--endprint-->
+			</div>
+			<script>
+				var xmlhttp;
+				var count = 1;
+				var GoodsList = [];
+				var money = 0;
+				function AddGoods(){
+					var GoodsId = document.Cashier.GoodsId.value;//得到扫描的商品编号
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././SelectGoodsInfo",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xmlhttp.send("goodsid="+GoodsId);
+					xmlhttp.onreadystatechange=getResult;
+				}
+				function getResult(){
+					if (xmlhttp.readyState==4) {		
+						if(xmlhttp.status==200){
+							var rec=xmlhttp.responseText;
+							var GoodInfo = JSON.parse(rec);
+							var GoodsId = GoodInfo.goodsID;
+							if(GoodsId != ""){
+								var flag = 0;
+								for(var i = 0;i < GoodsList.length;i++){
+									if(GoodsList[i].GoodsId == GoodsId){//相同商品，数量加一
+										GoodsList[i].GoodsNum += 1;
+										flag = 1;
+										var colNum = GoodsList[i].ColNum;
+										var table = document.getElementById("GoodsTable");
+										var tablecell = table.rows[colNum].cells[4];
+										tablecell.innerHTML = GoodsList[i].GoodsNum;//修改数量
+										var price = table.rows[colNum].cells[2].innerHTML;
+										var newGoodMoney = price * GoodsList[i].GoodsNum;//修改小计
+										table.rows[colNum].cells[5].innerHTML = newGoodMoney;
+										money = parseFloat(money) + parseFloat(price);
+										var AllMoney = document.getElementById("money");
+										AllMoney.innerHTML = money;//修改总计
+										break;
+									}
+								}
+								if(flag == 0){//没有相同商品，添加记录
+									var jsonObj = {
+										"GoodsId":GoodsId,
+										"GoodsNum":1,
+										"ColNum":count//记录所在行
+									}
+									console.log(jsonObj);
+									GoodsList.push(jsonObj);
+									var GoodsName = GoodInfo.goodsName;
+									var GoodsPrice = GoodInfo.saPrice;
+									var UntilTime = GoodInfo.STime;
+									var GoodsNum = -1;
+									for(var i = 0;i < GoodsList.length;i++){
+										if(GoodsList[i].GoodsId == GoodsId){//找到商品
+											GoodsNum = GoodsList[i].GoodsNum;
+											break;
+										}
+									}
+									var GoodMoney = GoodsPrice * GoodsNum;
+									money = parseFloat(money) + parseFloat(GoodsPrice);
+									var GoodsTable = document.getElementById("GoodsTable");
+									GoodsTable.innerHTML += '<tr><td>' + GoodsId + '</td><td>' + GoodsName + '</td><td>' + GoodsPrice + '</td><td>' + UntilTime + '</td><td>' + GoodsNum + '</td><td>' + GoodMoney + '</td><td><input type="button" id="' + count + '" class="btn btn-xs btn-danger" onclick="DeleteGoods(event)" value="删除" /></td></tr>';
+									var AllMoney = document.getElementById("money");
+									AllMoney.innerHTML = money;
+									var StaffId = document.getElementById("StaffId");
+									StaffId.innerHTML = getCookie("inputStaffid");
+									document.getElementById("table_order").style.display = '';
+									count++;
+								}
+							}
+						}
+					}
+				}
+				function AddOrder(){
+					var OrderNo = (new Date()).valueOf();//订单号
+					var OrderId = document.getElementById("OrderId");
+					OrderId.innerHTML = OrderNo;
+					var UserId = document.getElementById("VIPId").value;//会员号
+					var VIPId = document.getElementById("UserId");
+					VIPId.innerHTML = UserId;
+					console.log(UserId);
+					var StaffId = getCookie("inputStaffid");//员工ID
+					var Order = [];
+					for(var i = 0;i < GoodsList.length;i++){
+						var orderObj = {
+								"GoodsId":GoodsList[i].GoodsId,
+								"GoodsNum":GoodsList[i].GoodsNum
+							}
+						Order.push(orderObj);
+					}
+					var JsonStr = {//组成json
+							"OrderNo":OrderNo,
+							"UserId":UserId,
+							"StaffId":StaffId,
+							"Order":Order
+					}
+					if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+					else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+					xmlhttp.open("POST","../.././DoCashier",true);
+					xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					console.log(JsonStr);
+					xmlhttp.send("JsonStr="+JSON.stringify(JsonStr));
+					xmlhttp.onreadystatechange=getCashierResult;
+				}
+				
+				function getCashierResult(){
+					if (xmlhttp.readyState==4) {		
+						if(xmlhttp.status==200){
+							var rec=xmlhttp.responseText;
+							if(rec == "true"){
+								//结账成功,打印订单
+								
+								//隐藏打印时不需要的操作列
+								 var table = document.getElementById("GoodsTable");
+								 var trs = table.rows;
+								 for(var i = 0, len = trs.length; i < len; i++){
+								     var cell = trs[i].cells[6];
+								     cell.style.display = 'none';
+								 }
+								
+								 bodyHtml = window.document.body.innerHTML;
+									
+								
+							    sPrintStr = "<!--startprint-->"; //开始打印标识字符串有17个字符
+							    ePrintStr = "<!--endprint-->"; //结束打印标识字符串
+							    printHtml = bodyHtml.substr(bodyHtml.indexOf(sPrintStr) + 17); //从开始打印标识之后的内容
+							    printHtml = printHtml.substring(0, printHtml.indexOf(ePrintStr)); //截取开始标识和结束标识之间的内容
+							    window.document.body.innerHTML = printHtml; //把需要打印的指定内容赋给body.innerHTML
+							    window.print(); //调用浏览器的打印功能打印指定区域
+							    window.document.body.innerHTML = bodyHtml;//重新给页面内容赋值；
+							    
+							  //显示之前隐藏的操作列
+							    var table = document.getElementById("GoodsTable");
+								 var trs = table.rows;
+								 for(var i = 0, len = trs.length; i < len; i++){
+								     var cell = trs[i].cells[6];
+								     cell.style.display = '';
+								 }
+								
+							}
+							else{
+								//结账失败
+							}
+						}
+					}
+				}
+				
+				function getCookie(cname)
+				{
+				  var name = cname + "=";
+				  var ca = document.cookie.split(';');
+				  for(var i=0; i<ca.length; i++) 
+				  {
+				    var c = ca[i].trim();
+				    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+				  }
+				  return "";
+				}
+				
+				function DeleteGoods(event) {
+					event = event ? event : window.event;
+					var obj = event.srcElement ? event.srcElement : event.target;
+					var Number = obj.id;
+					var table = document.getElementById("GoodsTable");
+					var tablecell = table.rows[Number].cells[5].innerHTML;
+					console.log(tablecell);
+					money = parseFloat(money) - parseFloat(tablecell);
+					var AllMoney = document.getElementById("money");
+					AllMoney.innerHTML = money;
+					GoodsList.splice(Number - 1,1);
+					console.log(GoodsList);
+					$(obj).parents("tr").addClass('hide');
+				}
+				
+			</script>
+		</div>
+	
+		
+	</body>
+</html>

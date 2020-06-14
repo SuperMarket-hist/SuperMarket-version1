@@ -54,51 +54,45 @@
 		</div>
 		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
 			<ul class="nav nav-pills nav-stacked">
-		  		<li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li>
-		  		<li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
-		  		<li role="presentation"><a href="../OfficePage/StaffManageIndex.html">员工管理</a></li>
-		  		<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+		  		<!-- <li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li> -->
+		  		<li role="presentation"><a href="../OfficePage/Office-TableIndex.html">报表功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/Office-StaffManageIndex.html">员工管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/Office-ReturnOrderIndex.html">退货功能</a></li>
 		  		<li role="presentation" class="active"><a href="#">会员管理</a></li>
-		  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<!-- <li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
 		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li>
-		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li>
+		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li> -->
+				<li role="presentation"><a href="Office-ChangePassword.html">修改密码</a></li>
 			</ul>
 		</div>
 		<div class="col-lg-10">
 			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
 				<ul class="nav nav-pills nav-stacked">
-				  <li role="presentation"><a href="RegistVip.html">注册会员</a></li>
-				  <li role="presentation" class="active"><a href="#">查询会员</a></li>
+				  <li role="presentation" class="active"><a href="#">注册会员</a></li>
+				  <li role="presentation"><a href="Office-SelectVip.html">查询会员</a></li>
 				</ul>
 			</div>
-			<div class="col-lg-10">
+			<div class="col-lg-5">
 				<div class="page-header">
-				  <h1><small>VIP信息查询</small></h1>
+				  <h1><small>VIP信息录入</small></h1>
 				</div>
 				<div class="col-lg-12">
-					<form method="post" action="Select" name = "Select_form">
-						<table>
-							<tr>
-								<td>
-						   			<input type="text" class="form-control" name="UserId" id="UserId" autocomplete="off" placeholder="会员帐号" required="required">
-						  		</td>
-								<td>
-									<input style="width: 150px;float: right; margin-left: 20px;" type="button" id="submit_btn" class="btn btn-primary" onclick="selectVip()" value="查询">
-								</td>
-							</tr>
-						</table>
+					<form method="post" action="Register" name = "Regist_form">
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">会员账号</label>
+					    <input type="text" class="form-control" name="UserId" id="UserId" autocomplete="off" placeholder="Vip account" required="required">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputEmail1">会员姓名</label>
+					    <input type="text" class="form-control" name="UserName" autocomplete="off" placeholder="Vip name" required="required">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputPassword1">初始积分</label>
+					    <input type="text" class="form-control" name="UserScore" placeholder="Initial points" required="required">
+					  </div>
 					</form>
-				</div>
-				<div class="col-lg-12" id="table_vip" style="margin-top: 20px;">
-					<table class="table table-condensed" id="vipInfo"></table>
-					<div class="col-lg-12" id="Goodsnull" style="display: none;">
-						<div class="col-lg-4"></div>
-						<div class="col-lg-4">
-							<h1 class="text-center lead">未查询到会员信息！</h1>
-						</div>
-						<div class="col-lg-4"></div>
-					</div>
-				</div>
+					<input style="width: 150px;float: right;" type="button" id="submit_btn" class="btn btn-primary" onclick="add()" value="添加" />
+				</div>		
 			</div>
 			<div class="alert alert-warning alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
@@ -120,36 +114,83 @@
 		</div>
 		</div>
 		
+		<!--  <script type="text/javascript">
+		// 	var xmlhttp;
+		// 	function loadCheck(){
+		// 		var UserId = document.Regist_form.UserId.value;
+		// 		if(UserId.length <= 0){
+		// 			document.getElementById("submit_btn").className="btn btn-primary disabled"
+		// 		}
+		// 		else{
+		// 			document.getElementById("submit_btn").className="btn btn-primary"
+		// 			if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
+		// 			else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
+		// 			xmlhttp.open("POST","../.././checkIdAvailable",true);
+		// 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		// 			xmlhttp.send("staffId="+staffId);
+		// 			xmlhttp.onreadystatechange=getResult;
+		// 		}
+				
+		// 	}
+			
+		// 	function getResult(){
+		// 		if (xmlhttp.readyState==4) {		
+		// 			if(xmlhttp.status==200){
+		// 				var rec=xmlhttp.responseText;
+		// 				if(rec == "true"){
+		// 					$('#inputId').popover('show');
+		// 					document.getElementById("submit_btn").className="btn btn-primary disabled"
+							
+		// 				}
+		// 				else{
+		// 					$('#inputId').popover('hide');
+		// 					document.getElementById("submit_btn").className="btn btn-primary"
+		// 				}
+		// 			}
+		// 			else{
+		// 				alert("连接失败");
+		// 			}
+		// 		}
+		// 	}    -->
+		
 		<script type="text/javascript">
-			function selectVip(){
-				vipInfo.innerHTML = '<tr><th>会员编号</th><th>会员姓名</th><th>当前积分</th></tr>';
-				var UserId = document.Select_form.UserId.value;
+		
+			function add(){
+				var UserId = document.Regist_form.UserId.value;
+				var UserName = document.Regist_form.UserName.value;
+				var UserScore = document.Regist_form.UserScore.value;
 				if(UserId.length <= 0){
 					document.getElementById("alerttext").innerHTML="会员编号为空";
 					$('.alert-warning').removeClass('hide').addClass('in');
 					document.getElementById("submit_btn").className="btn btn-primary disabled";
 				}
+				else if(UserName.length <= 0){
+					document.getElementById("alerttext").innerHTML="会员姓名为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled";
+				}
+				else if(UserScore.length <= 0){
+					document.getElementById("alerttext").innerHTML="初始积分为空";
+					$('.alert-warning').removeClass('hide').addClass('in');
+					document.getElementById("submit_btn").className="btn btn-primary disabled";
+				}
 				else{
 					document.getElementById("submit_btn").className="btn btn-primary";
-					$.post('../.././SelectVIPCountInfo',{
-						VIPId:UserId
+					$.post('../.././AddVip',{
+							UserId:UserId,
+							UserName:UserName,
+							UserScore:UserScore
 						},function(data){
-							if(data.userId == ""){
-								document.getElementById("Goodsnull").style.display='';
+							if(data = 1){
+								alert("添加成功!");
 							}
 							else{
-								var vipInfo = document.getElementById("vipInfo");
-								var UserId = data.userId;
-								var UserName = data.userName;
-								var UserScore = data.userScore;
-								vipInfo.innerHTML += '<tr><td>'+ UserId +'</td><td>'+ UserName +'</td><td>'+ UserScore +'</td></tr>';
-							document.getElementById("table_vip").style.display='';
+								alert("添加失败!");
 							}
 						},'json'
 					);
 				}
 			}
-		
 		</script>
 	</body>
 </html>
