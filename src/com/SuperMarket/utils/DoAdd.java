@@ -79,6 +79,30 @@ public class DoAdd {
 	
 	/**
 	 * 
+	 * @Title: DoIncomeGood
+	 * @Description: 执行在存储数量表中添加商品的方法
+	 * @author JamsF
+	 * @date 2020年6月17日上午9:05:39
+	 * @param GoodsId
+	 * @return 受影响的行数
+	 * @throws SQLException
+	 */
+	public static int DoIncomeGood(String GoodsId) throws SQLException {
+		String IncomeGoodSQL = "INSERT INTO wst_goods VALUES (?,?,?)";
+		
+		PreparedStatement psta = JDBCTool.executePreparedStatement(IncomeGoodSQL);
+		
+		psta.setString(1, GoodsId);
+		psta.setDouble(2, 0);
+		psta.setDouble(3, 0);
+		
+		int  InsertResult = psta.executeUpdate();
+		JDBCTool.close();
+		return InsertResult;
+	}
+	
+	/**
+	 * 
 	 * @Title: DoAddVip
 	 * @Description: 执行注册会员的方法
 	 * @author JamsF

@@ -47,7 +47,7 @@ public class AddGoods extends HttpServlet {
 		
 		pro_goods pg = new pro_goods();
 		pg.setGoodsID(request.getParameter("GoodsID"));
-		pg.setCategory(request.getParameter("Categor"));
+		pg.setCategory(request.getParameter("Category"));
 		pg.setCTime(request.getParameter("CTime"));
 		pg.setDiscount(Double.parseDouble(request.getParameter("Discount")));
 		pg.setFactory(request.getParameter("Factory"));
@@ -61,6 +61,8 @@ public class AddGoods extends HttpServlet {
 		int result = 0;
 		try {
 			result = new DoAdd().DoAddGoods(pg);
+			if(result == 1)
+				result = DoAdd.DoIncomeGood(pg.getGoodsID());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
