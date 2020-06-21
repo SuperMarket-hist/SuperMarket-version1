@@ -54,138 +54,89 @@
 		</div>
 		<div class="col-lg-2" style="margin-top: 50px;text-align: center;">
 			<ul class="nav nav-pills nav-stacked">
-		  		<li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li>
-		  		<li role="presentation"><a href="../OfficePage/TableIndex.html">报表功能</a></li>
-		  		<li role="presentation"><a href="../OfficePage/StaffManageIndex.html">员工管理</a></li>
-		  		<li role="presentation"><a href="../OfficePage/ReturnOrderIndex.html">退货功能</a></li>
+		  		<!-- <li role="presentation"><a href="../StorePage/StoreIndex.html">仓储管理</a></li> -->
+		  		<li role="presentation"><a href="../OfficePage/Office-TableIndex.html">报表功能</a></li>
+		  		<li role="presentation"><a href="../OfficePage/Office-StaffManageIndex.html">员工管理</a></li>
+		  		<li role="presentation"><a href="../OfficePage/Office-ReturnOrderIndex.html">退货功能</a></li>
 		  		<li role="presentation" class="active"><a href="#">会员管理</a></li>
-		  		<li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
+		  		<!-- <li role="presentation"><a href="../IncomePage/IncomeIndex.html">产品管理</a></li>
 		  		<li role="presentation"><a href="../SalePage/Cashier.html">收银业务</a></li>
-		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li>
+		  		<li role="presentation"><a href="../ChangePassword/ChangePassword.html">修改密码</a></li> -->
+				<li role="presentation"><a href="Office-ChangePassword.html">修改密码</a></li>
 			</ul>
 		</div>
 		<div class="col-lg-10">
 			<div class="col-lg-2" style="padding-top: 50px;text-align: center;">
 				<ul class="nav nav-pills nav-stacked">
-				  <li role="presentation" class="active"><a href="#">注册会员</a></li>
-				  <li role="presentation"><a href="SelectVip.html">查询会员</a></li>
-				  <li role="presentation"><a href="ChangeScore.html">积分兑换</a></li>
+				  <li role="presentation"><a href="Office-RegistVip.html">注册会员</a></li>
+				  <li role="presentation"><a href="Office-SelectVip.html">查询会员</a></li>
+				  <li role="presentation" class="active"><a href="#">积分兑换</a></li>
 				</ul>
 			</div>
 			<div class="col-lg-5">
 				<div class="page-header">
-				  <h1><small>VIP信息录入</small></h1>
+				  <h1><small>VIP积分兑换</small></h1>
 				</div>
 				<div class="col-lg-12">
-					<form method="post" action="Register" name = "Regist_form">
+					<form method="post" action="" name = "Regist_form">
 					  <div class="form-group">
 					    <label for="exampleInputEmail1">会员账号</label>
 					    <input type="text" class="form-control" name="UserId" id="UserId" autocomplete="off" placeholder="Vip account" required="required">
 					  </div>
 					  <div class="form-group">
-					    <label for="exampleInputEmail1">会员姓名</label>
-					    <input type="text" class="form-control" name="UserName" autocomplete="off" placeholder="Vip name" required="required">
-					  </div>
-					  <div class="form-group">
-					    <label for="exampleInputPassword1">初始积分</label>
+					    <label for="exampleInputPassword1">兑换积分</label>
 					    <input type="text" class="form-control" name="UserScore" placeholder="Initial points" required="required">
 					  </div>
 					</form>
-					<input style="width: 150px;float: right;" type="button" id="submit_btn" class="btn btn-primary" onclick="add()" value="添加" />
+					<input style="width: 150px;float: right;" type="button" id="submit_btn" class="btn btn-primary" onclick="add()" value="兑换" />
 				</div>		
 			</div>
 			<div class="alert alert-warning alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
-		       <span aria-hidden="true">&times;</span>
-		    </button>
-		    <strong id="alerttext"> </strong>
+			    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+			       <span aria-hidden="true">&times;</span>
+			    </button>
+			    <strong id="alerttext"> </strong>
+			</div>
+			<div class="alert alert-success alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+			    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+			       <span aria-hidden="true">&times;</span>
+			    </button>
+			    <strong id="alerttextsucc"> </strong>
+			</div>
+			<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
+			    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
+			       <span aria-hidden="true">&times;</span>
+			    </button>
+			    <strong id="alerttextfail"> </strong>
+			</div>
 		</div>
-		<div class="alert alert-success alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
-		       <span aria-hidden="true">&times;</span>
-		    </button>
-		    <strong id="alerttextsucc"> </strong>
-		</div>
-		<div class="alert alert-danger alert-dismissable hide" role="alert" style="position: absolute;right: 0;">
-		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">          
-		       <span aria-hidden="true">&times;</span>
-		    </button>
-		    <strong id="alerttextfail"> </strong>
-		</div>
-		</div>
-		
-		<!--  <script type="text/javascript">
-		// 	var xmlhttp;
-		// 	function loadCheck(){
-		// 		var UserId = document.Regist_form.UserId.value;
-		// 		if(UserId.length <= 0){
-		// 			document.getElementById("submit_btn").className="btn btn-primary disabled"
-		// 		}
-		// 		else{
-		// 			document.getElementById("submit_btn").className="btn btn-primary"
-		// 			if (window.XMLHttpRequest) {xmlhttp=new XMLHttpRequest();}
-		// 			else{xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");}	
-		// 			xmlhttp.open("POST","../.././checkIdAvailable",true);
-		// 			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-		// 			xmlhttp.send("staffId="+staffId);
-		// 			xmlhttp.onreadystatechange=getResult;
-		// 		}
-				
-		// 	}
-			
-		// 	function getResult(){
-		// 		if (xmlhttp.readyState==4) {		
-		// 			if(xmlhttp.status==200){
-		// 				var rec=xmlhttp.responseText;
-		// 				if(rec == "true"){
-		// 					$('#inputId').popover('show');
-		// 					document.getElementById("submit_btn").className="btn btn-primary disabled"
-							
-		// 				}
-		// 				else{
-		// 					$('#inputId').popover('hide');
-		// 					document.getElementById("submit_btn").className="btn btn-primary"
-		// 				}
-		// 			}
-		// 			else{
-		// 				alert("连接失败");
-		// 			}
-		// 		}
-		// 	}    -->
 		
 		<script type="text/javascript">
 		
 			function add(){
 				var UserId = document.Regist_form.UserId.value;
-				var UserName = document.Regist_form.UserName.value;
 				var UserScore = document.Regist_form.UserScore.value;
 				if(UserId.length <= 0){
 					document.getElementById("alerttext").innerHTML="会员编号为空";
 					$('.alert-warning').removeClass('hide').addClass('in');
 					document.getElementById("submit_btn").className="btn btn-primary disabled";
 				}
-				else if(UserName.length <= 0){
-					document.getElementById("alerttext").innerHTML="会员姓名为空";
-					$('.alert-warning').removeClass('hide').addClass('in');
-					document.getElementById("submit_btn").className="btn btn-primary disabled";
-				}
 				else if(UserScore.length <= 0){
-					document.getElementById("alerttext").innerHTML="初始积分为空";
+					document.getElementById("alerttext").innerHTML="兑换积分为空";
 					$('.alert-warning').removeClass('hide').addClass('in');
 					document.getElementById("submit_btn").className="btn btn-primary disabled";
 				}
 				else{
 					document.getElementById("submit_btn").className="btn btn-primary";
-					$.post('../.././AddVip',{
+					$.post('../.././UpdateVipCount',{
 							UserId:UserId,
-							UserName:UserName,
 							UserScore:UserScore
 						},function(data){
-							if(data = 1){
-								alert("添加成功!");
+							if(data == true){
+								alert("兑换成功!");
 							}
 							else{
-								alert("添加失败!");
+								alert("兑换失败!");
 							}
 						},'json'
 					);

@@ -3,6 +3,7 @@ package com.SuperMarket.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.text.ParseException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.SuperMarket.bean.profit_info;
 import com.SuperMarket.bean.store_goods;
+import com.SuperMarket.utils.DataUtil;
 import com.SuperMarket.utils.DoSelect;
 import com.SuperMarket.utils.DoUpdate;
 
@@ -56,6 +59,7 @@ public class ReturnOrder extends HttpServlet {
 		String UserId = JSONObject.fromObject(jsonstr).getString("VIPId");//得到会员账号
 		JSONArray json = JSONObject.fromObject(jsonstr).getJSONArray("Order");//得到商品数组
 		double walletsale = 0;//退货商品总额
+		double profitsale = 0;//退货商品利润
 		boolean result = false;//保存执行结果
 		
 		for(int i = 0;i < json.size();i++) {//遍历json数组
@@ -70,6 +74,7 @@ public class ReturnOrder extends HttpServlet {
 				e.printStackTrace();
 			}
 			walletsale += (goods.getSaPrice()) * GoodsNum;//计算总销售额
+			profitsale += (goods.getMarketPrice()) * GoodsNum;//计算总利润
 			try {
 				result =DoUpdate.DoReturnUpdateGoods(GoodsId, GoodsNum);//商品入库
 				result =DoUpdate.DoReturnDelectOrders(OrderId, GoodsId);//删除销售记录
@@ -88,6 +93,26 @@ public class ReturnOrder extends HttpServlet {
 		//更新积分
 		try {
 			result =DoUpdate.DoUpdateVipCount(UserId, (int)(0 - walletsale));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//更新报表数据
+		profit_info pf = new profit_info();
+		try {
+			pf.setDate(DataUtil.timeStamp2Date(OrderId));
+			pf.setProfit(0 - profitsale);
+			pf.setSaleMoney(0 - walletsale);
+		} catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			result = DoUpdate.DoUpdateProfitInfo(pf);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
